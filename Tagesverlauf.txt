@@ -1,0 +1,12 @@
+Montag 27.02.23
+ - Themeneinigung
+ - Gruppenfindung
+ - Lastenheft erstellt
+ - UML Usecase diagramm 
+	-> Basics
+	-> Erweitert (mit optionalen future features)
+ - 
+ - git repository erstellt
+   - access granted to immanuell
+   - Lastenheft commited
+   - UML Konzept Datei commited
