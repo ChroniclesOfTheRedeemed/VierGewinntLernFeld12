@@ -11,5 +11,12 @@ class customObserver(GameObserver):
 class TestViergewinnt(TestCase):
     def test_get_game_state(self):
         observer = customObserver()
-        game = Viergewinnt()
-        game.playerMadeMove()
+        game = Viergewinnt(observer)
+        game.playerMadeMove(4)
+        game.playerMadeMove(3)
+        game.playerMadeMove(4)
+        game.playerMadeMove(3)
+        game.playerMadeMove(4)
+        game.playerMadeMove(3)
+        game.playerMadeMove(4)
+        game.playerMadeMove(3)

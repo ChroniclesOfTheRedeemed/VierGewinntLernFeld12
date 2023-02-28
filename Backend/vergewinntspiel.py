@@ -25,10 +25,11 @@ class Viergewinnt:
         newState.player1turn = self.State.player1turn
         return newState
 
-    async def playerMadeMove(self, move, client):
+    def playerMadeMove(self, move):
+
         self.checkMove(move)
         levelOfMove = self.updateSpielFeld(move)
-        await self.updateGameStatus(move=move, levelOfMove=levelOfMove, client=client)
+        self.updateGameStatus(move=move, levelOfMove=levelOfMove)
         return levelOfMove
 
     def checkMove(self, move):
@@ -127,14 +128,15 @@ class Viergewinnt:
         self.State.player1turn = not self.State.player1turn
         return level
 
-    async def updateGameStatus(self, move, levelOfMove, client):
+    def updateGameStatus(self, move, levelOfMove):
         won = 0
         if self.gameWon(move=move, level=levelOfMove):
             won = self.getMarkOfLastMove(move=move)
         else:
             if not self.gameDraw():
                 return
-        await client.gameOver(player1wins=won)
+        self.game_observer.gameOver(player1wins=won)
+        self.__init__(self.game_observer)
 
     def inBoundaries(self, coloumn, row):
         return 0 <= coloumn < self.breite and 0 <= row < self.hoehe
