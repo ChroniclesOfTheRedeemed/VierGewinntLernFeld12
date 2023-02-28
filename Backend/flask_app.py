@@ -7,15 +7,19 @@ app = Flask(__name__)
 email = "username"
 password = "password"
 
+
 @app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         x = request.json
+        print(x)
         if email in x and password in x:
+            print("it's there")
             if x[email] == "admin" and x[password] == "admin":
                 return "authentication succeeded"
-        return "authentication failed"
-
+            else:
+                return "authentication failed"
+        return "bad request"
 
 
 if __name__ == '__main__':
