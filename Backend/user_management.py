@@ -34,7 +34,7 @@ class UserManagement:
         return user.profile
 
     def add_user(self, username, password):
-        self.db.create_user(username, password)
+        self.db.create_user(username, self.hash_password(password))
 
     def hash_password(self, password: str):
         return bcrypt.hashpw(password.encode('utf-8'), b'$2b$12$X50ynTmqfshhtC59ZFpcv.')

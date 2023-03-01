@@ -14,3 +14,8 @@ class TestUserManagement(TestCase):
 
         manager = UserManagement()
         print(manager.hash_password("toll"))
+
+    def test_user_add(self):
+
+        manager = UserManagement()
+        print(manager.add_user("admin", "admin"))

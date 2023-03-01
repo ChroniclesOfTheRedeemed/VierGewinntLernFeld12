@@ -1,11 +1,14 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
+
+from user_management import UserManagement
 
 app = Flask(__name__)
 
 email = "username"
 password = "password"
+user_manager = UserManagement()
 
 
 @app.route('/login', methods=['POST'])
@@ -13,12 +16,22 @@ def login():
     if request.method == 'POST':
         x = request.json
         print(x)
+
         if email in x and password in x:
-            print("it's there")
-            if x[email] == "admin" and x[password] == "admin":
-                return "authentication succeeded"
-            else:
-                return "authentication failed"
+            result = user_manager.login(x[email], x[password])
+        else:
+            result = "bad request"
+        response = jsonify(result)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+@app.route('/create_users', methods=['POST'])
+def logina():
+    if request.method == 'POST':
+        x = request.json
+        print(x)
+        if email in x and password in x:
+            return user_manager.add_user(x[email], x[password])
         return "bad request"
 
 

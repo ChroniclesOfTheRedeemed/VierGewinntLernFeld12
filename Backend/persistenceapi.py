@@ -42,7 +42,7 @@ class Persistence:
     def create_user(self, username, password):
         x = Storer.load(user_file)
         x[username] = {
-            "password": password,
+            "password": str(password),
             "profile": {
                 "wins": 0
             }

@@ -1,10 +1,6 @@
 {
-    "karl": {
-        "password": "whaa",
-        "wins": 5
-    },
-    "user": {
-        "password": "pass",
+    "admin": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.4arFjttcLw0.klvPYqDFr.6/smkVBFi'",
         "profile": {
             "wins": 0
         }
