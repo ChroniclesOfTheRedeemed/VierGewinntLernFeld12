@@ -10,6 +10,8 @@ CORS(app)
 
 email = "username"
 password = "password"
+move = "move"
+option = "option"
 user_manager = UserManagement()
 
 
@@ -29,12 +31,12 @@ def login():
         return response
 
 
-@app.route('/create_users', methods=['POST'])
+@app.route('/start_game', methods=['POST'])
 def logina():
     if request.method == 'POST':
         x = request.json
         print(x)
-        if email in x and password in x:
+        if option in x:
             return user_manager.add_user(x[email], x[password])
         return "bad request"
 
