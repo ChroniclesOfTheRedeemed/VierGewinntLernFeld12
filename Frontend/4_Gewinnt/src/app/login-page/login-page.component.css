@@ -1,0 +1,46 @@
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    padding-right: 3%;
+    
+    width: 30%;
+    display: block;
+    margin-left: 40%;
+    margin-right: 60%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+.Login .Label{
+    width: 30%;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    margin-left: 40%;
+    margin-right: 60%;
+    
+}
+button{
+    display: block;
+    width: 30%;
+    margin-top: 3%;
+    box-sizing: border-box;
+    margin-left: 40%;
+    margin-right: 40%;
+}
+form {
+border: 3px solid #f1f1f1;
+}
+.Login{
+    padding-top: 3%;
+    padding-bottom: 3%;
+border-bottom: 0.1cm;
+border-top: 0.1cm;
+border-left: 0.1cm;
+border-right: 0.1cm;
+border: 1px solid black;
+font-family: arial, sans-serif;
+vertical-align: middle;
+margin-left: 30%;
+margin-right: 30%;
+}

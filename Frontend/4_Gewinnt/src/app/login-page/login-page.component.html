@@ -1,0 +1,9 @@
+<div class="Login">
+    <label class="Label"   for="uname"><b>Username</b></label>
+    
+    <input id="User" #User  type="text" placeholder="Enter Username" name="uname"  required>
+    <label class="Label" for="psw"><b>Password</b></label>
+    <input  id="Password" #Password type="password" placeholder="Enter Password" value="password"  name="psw" required>
+
+    <button type="button"  (click)="onSelect(User.value, Password.value)">Login</button>
+</div>
