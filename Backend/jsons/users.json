@@ -1,6 +1,12 @@
 {
-  "karl": {
-    "password": "whaa",
-    "wins": 5
-  }
+    "karl": {
+        "password": "whaa",
+        "wins": 5
+    },
+    "user": {
+        "password": "pass",
+        "profile": {
+            "wins": 0
+        }
+    }
 }
