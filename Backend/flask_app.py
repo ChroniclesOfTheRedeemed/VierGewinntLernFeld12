@@ -1,10 +1,12 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask, request, render_template, redirect, url_for, jsonify
+from flask_cors import CORS
 
 from user_management import UserManagement
 
 app = Flask(__name__)
+CORS(app)
 
 email = "username"
 password = "password"
@@ -24,6 +26,7 @@ def login():
         response = jsonify(result)
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
+
 
 @app.route('/create_users', methods=['POST'])
 def logina():
