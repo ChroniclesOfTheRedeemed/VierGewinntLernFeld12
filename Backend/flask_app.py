@@ -16,7 +16,7 @@ def login():
         if email in x and password in x:
             print("it's there")
             if x[email] == "admin" and x[password] == "admin":
-                return "authentication succeeded"
+                return  "authentication succeeded"
             else:
                 return "authentication failed"
         return "bad request"
