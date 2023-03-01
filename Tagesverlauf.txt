@@ -10,3 +10,15 @@ Montag 27.02.23
    - access granted to immanuell
    - Lastenheft commited
    - UML Konzept Datei commited
+
+28.02
+ - Lastenheft review und verfeinern
+ - Abgabe Lastenheft
+ - Immanuel:
+	- frontend aufsetzen
+	- login page gestalten
+	- versuche api consumption
+ - daniel
+	- backend aufsetzebn
+	- mock api für login gestalten
+	- versuche persistence api für user
