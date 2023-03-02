@@ -4,7 +4,7 @@ draw = "draw"
 ongoing = "ongoing"
 
 
-class Status:
+class Status4G:
 
     def __init__(self):
         self.SpielFeld = []

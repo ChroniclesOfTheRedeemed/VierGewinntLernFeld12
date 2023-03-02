@@ -20,7 +20,7 @@ class UserManagement:
         if user and user.password == str(self.hash_password(password_unhashed)):
             token = self.generate_random_token()
             self.sessions[token] = username
-            return token
+            return str(token)
         else:
             return "invalid"
 

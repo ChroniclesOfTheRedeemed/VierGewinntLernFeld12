@@ -1,7 +1,7 @@
 import copy
 
 import V4State
-from V4State import Status, BadMoveException, GameObserver
+from V4State import Status4G, BadMoveException, GameObserver
 
 
 class Viergewinnt:
@@ -19,12 +19,12 @@ class Viergewinnt:
         self.maxMoves = self.breite * self.hoehe
         self.FirstMove = -1
         self.movesDone = 0
-        self.State = Status()
+        self.State = Status4G()
         self.game_observer = observer
         self.State.SpielFeld = [[self.feldleer for item in range(0, self.hoehe)] for item in range(0, self.breite)]
 
     def getGameState(self):
-        newState = Status()
+        newState = Status4G()
         newState.SpielFeld = copy.deepcopy(self.State.SpielFeld)
         newState.player1turn = self.State.player1turn
         return newState
