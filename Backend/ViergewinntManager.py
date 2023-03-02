@@ -33,15 +33,18 @@ class GameManagement(GameObserver):
             return "no game found", None, None, None
 
         token1, token2 = self.get_usernames_by_game_id(game.id)
-        return status, game.State, user_manager.sessions[token1], user_manager.sessions[token2]
+        return status, game.State, token1, token2
 
     def request_solo_game(self, token):
         game = Viergewinnt(self)
+        print( )
+        print("hier")
+        print(user_manager.sessions)
         user_name = user_manager.sessions[token]
         self.player1_sessions[user_name] = game
         self.player2_sessions[user_name] = game
         token1, token2 = self.get_usernames_by_game_id(game.id)
-        return "ok", game.State, user_manager.sessions[token1], user_manager.sessions[token2]
+        return "ok", game.State, token1, token2
 
     def make_move(self, token, move):
         status = "ok"
@@ -68,7 +71,7 @@ class GameManagement(GameObserver):
             return status, None, None, None
         else:
             token1, token2 = self.get_usernames_by_game_id(game.id)
-            return status, game.State, user_manager.sessions[token1], user_manager.sessions[token2]
+            return status, game.State, token1, token2
 
 
     def fetch_invites(self):
@@ -86,13 +89,13 @@ class GameManagement(GameObserver):
     def get_usernames_by_game_id(self, game_id):
         user_name_1 = "player_not_found"
         user_name_2 = "player_not_found"
-        for token, game in self.player1_sessions.items():
+        for username, game in self.player1_sessions.items():
             if game_id == game.id:
-                user_name_1 = token
+                user_name_1 = username
 
-        for token, game in self.player2_sessions.items():
+        for username, game in self.player2_sessions.items():
             if game_id == game.id:
-                user_name_2 = token
+                user_name_2 = username
 
         return user_name_1, user_name_2
 
