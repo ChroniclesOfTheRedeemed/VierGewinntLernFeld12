@@ -22,3 +22,14 @@ Montag 27.02.23
 	- backend aufsetzebn
 	- mock api für login gestalten
 	- versuche persistence api für user
+
+01.03
+ - git merge konflikte wegen gepushed virtual environment
+ - login page fertig gemacht
+ - wesentliche Schnittstellen konfigurationen besprochen
+ - Main Page Referenz in login page hinzugefügt 
+
+02.03
+ - JSON Frontend Serialize/Deserializing Probleme behoben
+ - User Creation Page hinzugefügt
+ - user creation und login api gebaut und konsumiert
