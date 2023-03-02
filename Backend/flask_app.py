@@ -168,7 +168,7 @@ def create_game_state(game_state: Status4G, player1_name, player2_name):
 def create_game_field_response(game_field):
     result = {}
     for index, coloumn in enumerate(game_field):
-        result["coloumn " + str(index)] = coloumn
+        result["coloumn_" + str(index)] = coloumn
     return result
 
 
