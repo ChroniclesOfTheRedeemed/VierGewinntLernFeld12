@@ -1,13 +1,11 @@
-
 import random
 
 from persistenceapi import Persistence
 
 import bcrypt
 
+
 # Declaring our password
-
-
 
 
 class UserManagement:
@@ -21,20 +19,23 @@ class UserManagement:
         user = self.db.load_user(username)
         if user.password == str(self.hash_password(password_unhashed)):
             token = self.generate_random_token()
-            self.sessions[username] = token
+            self.sessions[token] = username
             return token
         else:
             return "invalid"
 
-    def logout(self, username):
-        del self.sessions[username]
+    def logout(self, token):
+        del self.sessions[token]
 
     def get_user_profile(self, username):
         user = self.db.load_user(username)
         return user.profile
 
     def add_user(self, username, password):
+        if self.db.load_user(username):
+            return "user already exists"
         self.db.create_user(username, self.hash_password(password))
+        return self.login(username, password)
 
     def hash_password(self, password: str):
         return bcrypt.hashpw(password.encode('utf-8'), b'$2b$12$X50ynTmqfshhtC59ZFpcv.')
@@ -43,7 +44,10 @@ class UserManagement:
         return random.getrandbits(128)
 
     def validate_token(self, token, user) -> bool:
-        if user in self.sessions:
-            return self.sessions[user] == token
+        if token in self.sessions:
+            return self.sessions[token] == user
         else:
             return False
+
+
+user_manager = UserManagement()

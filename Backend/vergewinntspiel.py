@@ -1,11 +1,15 @@
 import copy
 
-from V4GState import V4GState, BadMoveException, GameObserver
+import V4State
+from V4State import Status, BadMoveException, GameObserver
 
 
 class Viergewinnt:
+    ids = 0
 
     def __init__(self, observer: GameObserver):
+        self.id = Viergewinnt.ids + 1
+        Viergewinnt.ids += 1
         self.breite = 7
         self.hoehe = 6
         self.feldleer = 0
@@ -15,12 +19,12 @@ class Viergewinnt:
         self.maxMoves = self.breite * self.hoehe
         self.FirstMove = -1
         self.movesDone = 0
-        self.State = V4GState()
+        self.State = Status()
         self.game_observer = observer
         self.State.SpielFeld = [[self.feldleer for item in range(0, self.hoehe)] for item in range(0, self.breite)]
 
     def getGameState(self):
-        newState = V4GState()
+        newState = Status()
         newState.SpielFeld = copy.deepcopy(self.State.SpielFeld)
         newState.player1turn = self.State.player1turn
         return newState
@@ -136,7 +140,8 @@ class Viergewinnt:
             if not self.gameDraw():
                 return
         self.game_observer.gameOver(player1wins=won)
-        self.__init__(self.game_observer)
+        self.State.result = V4State.player1wins if won else V4State.player2wins
+        # self.__init__(self.game_observer)
 
     def inBoundaries(self, coloumn, row):
         return 0 <= coloumn < self.breite and 0 <= row < self.hoehe

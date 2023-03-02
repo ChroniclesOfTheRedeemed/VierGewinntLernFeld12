@@ -1,6 +1,12 @@
 {
     "admin": {
-        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.4arFjttcLw0.klvPYqDFr.6/smkVBFi'",
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.7fJcq9JYmTIK0yTbekxXRgvzNvAXeNW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "admina": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.7fJcq9JYmTIK0yTbekxXRgvzNvAXeNW'",
         "profile": {
             "wins": 0
         }

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from V4GState import GameObserver
+from V4State import GameObserver
 from vergewinntspiel import Viergewinnt
 
 
