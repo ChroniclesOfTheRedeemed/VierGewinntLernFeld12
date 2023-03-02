@@ -30,9 +30,18 @@ def create_user():
             result = user_manager.add_user(x[email], x[password])
         else:
             result = "bad request"
-        response = jsonify(result)
+        if result == "invalid" or result == "bad request":
+            response = {
+                token: 0,
+                "status": result
+            }
+        else:
+            response = {
+                token: result,
+                "status": "ok"
+            }
         # response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
+        return jsonify(response)
 
 
 @app.route('/login', methods=['POST'])
@@ -46,9 +55,18 @@ def login():
             result = user_manager.login(x[email], x[password])
         else:
             result = "bad request"
-        response = jsonify(result)
+        if result == "invalid" or result == "bad request":
+            response = {
+                token: 0,
+                "status": result
+            }
+        else:
+            response = {
+                token: result,
+                "status": "ok"
+            }
         # response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
+        return jsonify(response)
 
 
 @app.route('/state', methods=['GET'])

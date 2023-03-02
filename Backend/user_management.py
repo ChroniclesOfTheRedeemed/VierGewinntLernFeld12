@@ -17,7 +17,7 @@ class UserManagement:
     # returns Auth Token
     def login(self, username, password_unhashed):
         user = self.db.load_user(username)
-        if user.password == str(self.hash_password(password_unhashed)):
+        if user and user.password == str(self.hash_password(password_unhashed)):
             token = self.generate_random_token()
             self.sessions[token] = username
             return token

@@ -22,9 +22,6 @@ class GameManagement(GameObserver):
         self.player1_sessions = {}
         self.player2_sessions = {}
 
-    def start_game(self, token_player_1, token_player_2):
-        pass
-
     def fetch_state(self, token):
 
         if token in self.player1_sessions:
@@ -33,14 +30,9 @@ class GameManagement(GameObserver):
             game = self.player2_sessions[token]
         else:
             return "error"
-        return game.State
-        # check if game exists
-        # if not return game doesnt exist
-        # else
-        # return
-        # vg4state
-        # opponent name
-        pass
+
+        token1, token2 = self.get_tokens_by_game_id(game.id)
+        return game.State, user_manager.sessions[token1], user_manager.sessions[token2]
 
     def request_solo_game(self, token):
         game = Viergewinnt(self)

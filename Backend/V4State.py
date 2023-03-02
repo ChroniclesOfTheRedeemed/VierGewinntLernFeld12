@@ -3,13 +3,13 @@ player2wins = "player1wins"
 draw = "draw"
 ongoing = "ongoing"
 
+
 class Status:
 
     def __init__(self):
         self.SpielFeld = []
         self.player1turn = True
-        self.result = "not_started"
-
+        self.result = ongoing
 
 
 class GameObserver:
