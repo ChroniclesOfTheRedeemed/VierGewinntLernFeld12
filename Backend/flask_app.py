@@ -25,6 +25,10 @@ json_player2 = "player2"
 json_game_finish = "game_state"
 
 
+class BadRequestException(Exception):
+    pass
+
+
 @app.route('/create_user', methods=['POST'])
 @cross_origin()
 def create_user():
@@ -53,14 +57,10 @@ def create_user():
 @app.route('/login', methods=['POST'])
 @cross_origin()
 def login():
-    if request.method == 'POST':
-        x = request.json
-        print(x)
+    validation, properties = validate_request([email, password], request)
+    if validation == "ok":
+        result = user_manager.login(*properties)
 
-        if email in x and password in x:
-            result = user_manager.login(x[email], x[password])
-        else:
-            result = "bad request"
         if result == "invalid" or result == "bad request":
             response = {
                 token: "0",
@@ -77,13 +77,20 @@ def login():
 @app.route('/logout', methods=['POST'])
 @cross_origin()
 def logout():
-    if request.method == 'POST':
-        x = request.json
-        print(x)
+    validation, properties = validate_request([token], request)
+    if validation == "ok":
+        user_manager.logout(*properties)
+        return jsonify({
+            status_name: "ok"
+        })
 
-        if token in x:
-            user_manager.logout(x[token])
 
+@app.route('/get_profile', methods=['GET'])
+@cross_origin()
+def get_profile():
+    validation, properties = validate_request([token, email], request)
+    if validation == "ok":
+        user_manager.get_user_profile(*properties)
         return jsonify({
             status_name: "ok"
         })
@@ -92,67 +99,53 @@ def logout():
 @app.route('/state', methods=['GET'])
 @cross_origin()
 def get_game_state():
-    if request.method == 'GET':
-        x = request.json
-        print(x)
-        answer = "there has been an issue"
-        if token in x:
-            status, game_state, player1_name, player2_name = game_manager.fetch_state(x[token])
-            response = create_game_state(game_state, player1_name, player2_name)
-        else:
-            status = "bad request"
-        if status == "ok":
-            response[status_name] = status
-            return jsonify(response)
-        else:
-            return jsonify({
-                status_name: status
-            })
+    validation, properties = validate_request([token], request)
+    if validation == "ok":
+        status, game_state, player1_name, player2_name = game_manager.fetch_state(*properties)
+        response = create_game_state(game_state, player1_name, player2_name)
+        response[status_name] = status
+        return jsonify(response)
+
+    else:
+        return jsonify({
+            status_name: validation
+        })
 
 
 @app.route('/request_game', methods=['POST'])
 @cross_origin()
 def request_game():
-    if request.method == 'POST':
-        x = request.json
-        print(x)
-        answer = "there has been an issue"
-        if token in x and match_type in x:
-            if x[match_type] == match_type_solo:
-                status, game_state, player1_name, player2_name = game_manager.request_solo_game(x[token])
-                response = create_game_state(game_state, player1_name, player2_name)
-            else:
-                status = "unkown match type"
+    validation, properties = validate_request([token, match_type], request)
+    if validation == "ok":
+        r_token, r_match_type = properties
+        response = {}
+        if r_match_type == match_type_solo:
+            status, game_state, player1_name, player2_name = game_manager.request_solo_game(r_token)
+            response = create_game_state(game_state, player1_name, player2_name)
         else:
-            status = "bad request"
-        if status == "ok":
-            response[status_name] = status
-            return jsonify(response)
-        else:
-            return jsonify({
-                status_name: status
-            })
+            status = "unknown match type"
+
+        response[status_name] = status
+        return jsonify(response)
+    else:
+        return jsonify({
+            status_name: validation
+        })
 
 
 @app.route('/move', methods=['POST'])
 @cross_origin()
 def move():
-    if request.method == 'POST':
-        x = request.json
-        print(x)
-        answer = "there has been an issue"
-        if token in x and json_move in x:
-            status, game_state, player1_name, player2_name = game_manager.make_move(x[token], x[json_move])
-            response = create_game_state(game_state, player1_name, player2_name)
-        else:
-            status = "bad request"
-        if status == "ok":
-            response[status_name] = status
-            return jsonify(response)
-        else:
-            return jsonify({
-                status_name: status
-            })
+    validation, properties = validate_request([token, json_move], request)
+    if validation == "ok":
+        status, game_state, player1_name, player2_name = game_manager.make_move(*properties)
+        response = create_game_state(game_state, player1_name, player2_name)
+        response[status_name] = status
+        return jsonify(response)
+    else:
+        return jsonify({
+            status_name: validation
+        })
 
 
 def create_game_state(game_state: Status4G, player1_name, player2_name):
@@ -170,6 +163,29 @@ def create_game_field_response(game_field):
     for index, coloumn in enumerate(game_field):
         result["coloumn_" + str(index)] = coloumn
     return result
+
+
+def validate_request(args: list, request_to_validate):
+    json = request_to_validate.json
+    props = find_properties_in_answer(args, json)
+    status = "ok"
+    if token in args:
+        if not user_manager.validate_token(props[args.index(token)]):
+            status = "bad request"
+    if not props:
+        status = "bad request"
+    return status, props
+
+
+def find_properties_in_answer(args: list, json):
+    properties = []
+    for arg in args:
+        if arg in json:
+            properties.append(json[arg])
+        else:
+            properties = []
+            break
+    return tuple(properties) if len(properties) == len(args) else None
 
 
 if __name__ == '__main__':

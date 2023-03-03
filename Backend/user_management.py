@@ -16,6 +16,7 @@ class UserManagement:
 
     # returns Auth Token
     def login(self, username, password_unhashed):
+        status = "ok"
         user = self.db.load_user(username)
         if user and user.password == str(self.hash_password(password_unhashed)):
             token = str(self.generate_random_token())
@@ -44,11 +45,8 @@ class UserManagement:
     def generate_random_token(self):
         return random.getrandbits(128)
 
-    def validate_token(self, token, user) -> bool:
-        if token in self.sessions:
-            return self.sessions[token] == user
-        else:
-            return False
+    def validate_token(self, token) -> bool:
+        return token in self.sessions
 
 
 user_manager = UserManagement()
