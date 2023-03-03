@@ -3,8 +3,11 @@ import { Router, Routes } from '@angular/router';
 import { MainPageComponent } from '../main-page/main-page.component';
 import { NetworkBackendComponent } from '../network-backend/network-backend.component';
 import { HttpClient } from '@angular/common/http';
+import { async } from 'rxjs';
+import { UserCreationComponent } from '../user-creation/user-creation.component';
 const appRoutes:Routes=[
-  { path: 'Main-Page', component: MainPageComponent }
+  { path: 'Main-Page', component: MainPageComponent },
+  { path: 'User-Creation', component: UserCreationComponent }
 ]
 
 @Component({
@@ -16,12 +19,14 @@ export class LoginPageComponent {
   constructor(public router:Router, public network:NetworkBackendComponent){
 
   }
-
-  onSelect( User:String, psw:String): void {
-    console.log(User,psw+" test")
-    var bool = this.network.Autherisation(JSON.parse('{ "username": "admin", "password":"admin" }'));
+  userCreation(){
+    this.router.navigate(['/User-Creation']);
+  }
+   onSelect( User:String, psw:String) {
     
-    console.log(bool)
+    console.log(User,psw+" test")
+     this.network.Autherisation(User,psw);
+
     
   }
 

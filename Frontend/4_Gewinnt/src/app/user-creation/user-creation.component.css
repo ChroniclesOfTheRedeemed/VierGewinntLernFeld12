@@ -1,0 +1,38 @@
+.UserCreation{
+    padding: 16px 16px;
+    border-bottom: 0.1cm;
+    border-top: 0.1cm;
+    border-left: 0.1cm;
+    border-right: 0.1cm;
+    border: 1px solid black;
+    font-family: arial, sans-serif;
+    width: 30%;
+
+    margin-left: 34%;
+    margin-right: 50%;
+}
+input{
+    display: block;
+    width: 60%;
+    margin-top: 3%;
+    box-sizing: border-box;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 1%;
+}
+label{
+    display: block;
+    width: 60%;
+    margin-top: 3%;
+    box-sizing: border-box;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+button{
+    display: block;
+    width: 60%;
+    margin-top: 3%;
+    box-sizing: border-box;
+    margin-left: 20%;
+    margin-right: 20%;
+}

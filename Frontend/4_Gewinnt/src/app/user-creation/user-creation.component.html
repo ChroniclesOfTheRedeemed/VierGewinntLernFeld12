@@ -1,0 +1,11 @@
+<div class="UserCreation" >
+    <label class="Label"   for="uname"><b>Username</b></label>
+    
+    <input id="User" #User  type="text" placeholder="Enter Username" name="uname"  required>
+    <label class="Label" for="psw"><b>Password</b></label>
+    <input  id="Password" #Password type="password" placeholder="Enter Password" value=" "  name="psw" required>
+    <label class="Label" for="pswbestaetigen"><b>Password</b></label>
+    <input  id="Passwordbestaetigen" #Passwordbestaetigen type="password" placeholder="Enter Password" value=" "  name="pswbestaetigen" required>
+    <button type="button"  (click)="userCreation(User.value,Password.value,Passwordbestaetigen.value)">User Creation</button>
+    <button type="button"  (click)="backtoLogin()">Back to Login</button>
+</div>
