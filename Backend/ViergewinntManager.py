@@ -1,5 +1,6 @@
 import random
 
+import V4State
 from persistenceapi import Persistence
 
 import bcrypt
@@ -57,15 +58,19 @@ class GameManagement(GameObserver):
                 try:
                     game.playerMadeMove(move)
                     player1_moved = True
-                except:
+                except V4State.BadMoveException:
                     status = "bad move"
+                except V4State.GameEndedException:
+                    status = "game has concluded already"
         if user_name in self.player2_sessions and not player1_moved:
             game = self.player2_sessions[user_name]
             if not game.State.player1turn:
                 try:
                     game.playerMadeMove(move)
-                except:
+                except V4State.BadMoveException:
                     status = "bad move"
+                except V4State.GameEndedException:
+                    status = "game has concluded already"
         if not game:
             status = "there is no game going on"
             return status, None, None, None

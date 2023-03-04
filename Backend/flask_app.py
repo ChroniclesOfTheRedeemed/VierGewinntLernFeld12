@@ -11,138 +11,147 @@ app = Flask(__name__)
 CORS(app)
 
 
-class Response:
+class Api:
 
-    email = "username"
-    password = "password"
-    json_move = "coloumnNumber"
-    option = "option"
-    token = "token"
-    match_type = "match_type"
-    status_name = "status"
-    match_type_solo = "solo"
-    json_player1turn = "player1turn"
-    json_game_field = "game_field"
-    json_player1 = "player1"
-    json_player2 = "player2"
-    json_game_finish = "game_state"
+    class Url:
+        create_user = "/create_user"
+        login = "/login"
+        logout = "/logout"
+        get_profile = "/get_profile"
+        state = "/state"
+        move = "/move"
+        request_game = "/request_game"
+
+    class Json:
+        username = "username"
+        password = "password"
+        move = "coloumnNumber"
+        token = "token"
+        match_type = "match_type"
+        status_name = "status"
+        match_type_solo = "solo"
+        player1turn = "player1turn"
+        game_field = "game_field"
+        player1 = "player1"
+        player2 = "player2"
+        game_finish = "game_state"
 
 
 class BadRequestException(Exception):
     pass
 
 
-@app.route('/create_user', methods=['POST'])
+@app.route(Api.Url.create_user, methods=['POST'])
 @cross_origin()
 def create_user():
-    validation, properties = validate_request([Response.email, Response.password], request)
+    validation, properties = validate_request([Api.Json.username, Api.Json.password], request)
     if validation == "ok":
 
         status, result = user_manager.add_user(*properties)
         response = {
-            Response.token: result,
-            Response.status_name: status
+            Api.Json.token: result,
+            Api.Json.status_name: status
         }
 
         # response.headers.add('Access-Control-Allow-Origin', '*')
         return jsonify(response)
 
 
-@app.route('/login', methods=['POST'])
+@app.route(Api.Url.login, methods=['POST'])
 @cross_origin()
 def login():
-    validation, properties = validate_request([Response.email, Response.password], request)
+    validation, properties = validate_request([Api.Json.username, Api.Json.password], request)
     if validation == "ok":
         status, result = user_manager.login(*properties)
 
         response = {
-            Response.token: result,
-            Response.status_name: status
+            Api.Json.token: result,
+            Api.Json.status_name: status
         }
         return jsonify(response)
 
 
-@app.route('/logout', methods=['POST'])
+@app.route(Api.Url.logout, methods=['POST'])
 @cross_origin()
 def logout():
-    validation, properties = validate_request([Response.token], request)
+    validation, properties = validate_request([Api.Json.token], request)
     if validation == "ok":
         user_manager.logout(*properties)
         return jsonify({
-            Response.status_name: "ok"
+            Api.Json.status_name: "ok"
         })
 
 
-@app.route('/get_profile', methods=['GET'])
+@app.route(Api.Url.get_profile, methods=['GET'])
 @cross_origin()
 def get_profile():
-    validation, properties = validate_request([Response.token, Response.email], request)
+    validation, properties = validate_request([Api.Json.token, Api.Json.username], request)
     if validation == "ok":
         user_manager.get_user_profile(*properties)
         return jsonify({
-            Response.status_name: "ok"
+            Api.Json.status_name: "ok"
         })
 
 
-@app.route('/state', methods=['GET'])
+@app.route(Api.Url.state, methods=['GET'])
 @cross_origin()
 def get_game_state():
-    validation, properties = validate_request([Response.token], request)
+    validation, properties = validate_request([Api.Json.token], request)
     if validation == "ok":
         status, game_state, player1_name, player2_name = game_manager.fetch_state(*properties)
         response = create_game_state(game_state, player1_name, player2_name)
-        response[Response.status_name] = status
+        response[Api.Json.status_name] = status
         return jsonify(response)
 
     else:
         return jsonify({
-            Response.status_name: validation
+            Api.Json.status_name: validation
         })
 
 
-@app.route('/request_game', methods=['POST'])
+@app.route(Api.Url.request_game, methods=['POST'])
 @cross_origin()
 def request_game():
-    validation, properties = validate_request([Response.token, Response.match_type], request)
+    validation, properties = validate_request([Api.Json.token, Api.Json.match_type], request)
     if validation == "ok":
         r_token, r_match_type = properties
         response = {}
-        if r_match_type == Response.match_type_solo:
+        if r_match_type == Api.Json.match_type_solo:
             status, game_state, player1_name, player2_name = game_manager.request_solo_game(r_token)
             response = create_game_state(game_state, player1_name, player2_name)
         else:
             status = "unknown match type"
 
-        response[Response.status_name] = status
+        response[Api.Json.status_name] = status
         return jsonify(response)
     else:
         return jsonify({
-            Response.status_name: validation
+            Api.Json.status_name: validation
         })
 
 
-@app.route('/move', methods=['POST'])
+@app.route(Api.Url.move, methods=['POST'])
 @cross_origin()
 def move():
-    validation, properties = validate_request([Response.token, Response.json_move], request)
+    validation, properties = validate_request([Api.Json.token, Api.Json.move], request)
     if validation == "ok":
         status, game_state, player1_name, player2_name = game_manager.make_move(*properties)
         response = create_game_state(game_state, player1_name, player2_name)
-        response[Response.status_name] = status
+        response[Api.Json.status_name] = status
         return jsonify(response)
     else:
         return jsonify({
-            Response.status_name: validation
+            Api.Json.status_name: validation
         })
 
 
 def create_game_state(game_state: Status4G, player1_name, player2_name):
     return {
-        Response.json_player1turn: game_state.player1turn,
-        Response.json_game_field: create_game_field_response(game_state.SpielFeld),
-        Response.json_game_finish: game_state.result,
-        Response.json_player1: player1_name,
-        Response.json_player2: player2_name
+        Api.Json.player1turn: game_state.player1turn,
+        Api.Json.game_field: create_game_field_response(game_state.SpielFeld),
+        Api.Json.game_finish: game_state.result,
+        Api.Json.player1: player1_name,
+        Api.Json.player2: player2_name
     }
 
 
@@ -157,8 +166,8 @@ def validate_request(args: list, request_to_validate):
     json = request_to_validate.json
     props = find_properties_in_answer(args, json)
     status = "ok"
-    if Response.token in args:
-        if not user_manager.validate_token(props[args.index(Response.token)]):
+    if Api.Json.token in args:
+        if not user_manager.validate_token(props[args.index(Api.Json.token)]):
             status = "bad request"
     if not props:
         status = "bad request"

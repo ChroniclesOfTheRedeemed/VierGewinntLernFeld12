@@ -20,3 +20,7 @@ class GameObserver:
 
 class BadMoveException(Exception):
     pass
+
+
+class GameEndedException(Exception):
+    pass
