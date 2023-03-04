@@ -32,24 +32,15 @@ class BadRequestException(Exception):
 @app.route('/create_user', methods=['POST'])
 @cross_origin()
 def create_user():
-    if request.method == 'POST':
-        x = request.json
-        print(x)
+    validation, properties = validate_request([email, password], request)
+    if validation == "ok":
 
-        if email in x and password in x:
-            result = user_manager.add_user(x[email], x[password])
-        else:
-            result = "bad request"
-        if result == "invalid" or result == "bad request" or result == "user already exists":
-            response = {
-                token: "0",
-                status_name: result
-            }
-        else:
-            response = {
-                token: result,
-                status_name: "ok"
-            }
+        status, result = user_manager.add_user(*properties)
+        response = {
+            token: result,
+            status_name: status
+        }
+
         # response.headers.add('Access-Control-Allow-Origin', '*')
         return jsonify(response)
 
@@ -59,18 +50,12 @@ def create_user():
 def login():
     validation, properties = validate_request([email, password], request)
     if validation == "ok":
-        result = user_manager.login(*properties)
+        status, result = user_manager.login(*properties)
 
-        if result == "invalid" or result == "bad request":
-            response = {
-                token: "0",
-                status_name: result
-            }
-        else:
-            response = {
-                token: result,
-                status_name: "ok"
-            }
+        response = {
+            token: result,
+            status_name: status
+        }
         return jsonify(response)
 
 

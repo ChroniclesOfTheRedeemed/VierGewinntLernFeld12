@@ -21,9 +21,9 @@ class UserManagement:
         if user and user.password == str(self.hash_password(password_unhashed)):
             token = str(self.generate_random_token())
             self.sessions[token] = username
-            return token
+            return status, token
         else:
-            return "invalid"
+            return "invalid", "0"
 
     def logout(self, token):
         print(self.sessions)
@@ -35,7 +35,7 @@ class UserManagement:
 
     def add_user(self, username, password):
         if self.db.load_user(username):
-            return "user already exists"
+            return "user already exists", "0"
         self.db.create_user(username, self.hash_password(password))
         return self.login(username, password)
 
