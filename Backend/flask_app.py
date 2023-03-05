@@ -35,6 +35,8 @@ class Api:
         player1 = "player1"
         player2 = "player2"
         game_finish = "game_state"
+        player_profile = "profile"
+        ok = "ok"
 
 
 class BadRequestException(Exception):
@@ -45,15 +47,13 @@ class BadRequestException(Exception):
 @cross_origin()
 def create_user():
     validation, properties = validate_request([Api.Json.username, Api.Json.password], request)
-    if validation == "ok":
+    if validation == Api.Json.ok:
 
         status, result = user_manager.add_user(*properties)
         response = {
             Api.Json.token: result,
             Api.Json.status_name: status
         }
-
-        # response.headers.add('Access-Control-Allow-Origin', '*')
         return jsonify(response)
 
 
@@ -61,7 +61,7 @@ def create_user():
 @cross_origin()
 def login():
     validation, properties = validate_request([Api.Json.username, Api.Json.password], request)
-    if validation == "ok":
+    if validation == Api.Json.ok:
         status, result = user_manager.login(*properties)
 
         response = {
@@ -75,10 +75,10 @@ def login():
 @cross_origin()
 def logout():
     validation, properties = validate_request([Api.Json.token], request)
-    if validation == "ok":
-        user_manager.logout(*properties)
+    if validation == Api.Json.ok:
+        status = user_manager.logout(*properties)
         return jsonify({
-            Api.Json.status_name: "ok"
+            Api.Json.status_name: status
         })
 
 
@@ -86,10 +86,11 @@ def logout():
 @cross_origin()
 def get_profile():
     validation, properties = validate_request([Api.Json.token, Api.Json.username], request)
-    if validation == "ok":
-        user_manager.get_user_profile(*properties)
+    if validation == Api.Json.ok:
+        status, profile = user_manager.get_user_profile(*properties)
         return jsonify({
-            Api.Json.status_name: "ok"
+            Api.Json.status_name: status,
+            Api.Json.player_profile: profile
         })
 
 
@@ -97,7 +98,7 @@ def get_profile():
 @cross_origin()
 def get_game_state():
     validation, properties = validate_request([Api.Json.token], request)
-    if validation == "ok":
+    if validation == Api.Json.ok:
         status, game_state, player1_name, player2_name = game_manager.fetch_state(*properties)
         response = create_game_state(game_state, player1_name, player2_name)
         response[Api.Json.status_name] = status
@@ -113,7 +114,7 @@ def get_game_state():
 @cross_origin()
 def request_game():
     validation, properties = validate_request([Api.Json.token, Api.Json.match_type], request)
-    if validation == "ok":
+    if validation == Api.Json.ok:
         r_token, r_match_type = properties
         response = {}
         if r_match_type == Api.Json.match_type_solo:
@@ -134,7 +135,7 @@ def request_game():
 @cross_origin()
 def move():
     validation, properties = validate_request([Api.Json.token, Api.Json.move], request)
-    if validation == "ok":
+    if validation == Api.Json.ok:
         status, game_state, player1_name, player2_name = game_manager.make_move(*properties)
         response = create_game_state(game_state, player1_name, player2_name)
         response[Api.Json.status_name] = status
@@ -165,7 +166,7 @@ def create_game_field_response(game_field):
 def validate_request(args: list, request_to_validate):
     json = request_to_validate.json
     props = find_properties_in_answer(args, json)
-    status = "ok"
+    status = Api.Json.ok
     if Api.Json.token in args:
         if not user_manager.validate_token(props[args.index(Api.Json.token)]):
             status = "bad request"

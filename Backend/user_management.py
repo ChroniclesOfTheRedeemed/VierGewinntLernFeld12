@@ -1,5 +1,6 @@
 import random
 
+from flask_app import Api
 from persistenceapi import Persistence
 
 import bcrypt
@@ -28,6 +29,7 @@ class UserManagement:
     def logout(self, token):
         print(self.sessions)
         del self.sessions[token]
+        return Api.Json.ok
 
     def get_user_profile(self, username):
         user = self.db.load_user(username)
