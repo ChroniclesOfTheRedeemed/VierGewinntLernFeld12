@@ -129,6 +129,7 @@ class Viergewinnt:
         for level in range(0, self.hoehe):
             if self.State.SpielFeld[checkedMove][level] is self.feldleer:
                 self.State.SpielFeld[checkedMove][level] = mark
+                self.State.last_move = (checkedMove, level)
                 break
         self.movesDone += 1
         self.State.player1turn = not self.State.player1turn

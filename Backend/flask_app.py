@@ -122,7 +122,8 @@ def create_game_state(game_state: Status4G, player1_name, player2_name):
         Api.Json.game_field: create_game_field_response(game_state.SpielFeld),
         Api.Json.game_finish: game_state.result,
         Api.Json.player1: player1_name,
-        Api.Json.player2: player2_name
+        Api.Json.player2: player2_name,
+        Api.Json.last_move: game_state.last_move
     }
 
 

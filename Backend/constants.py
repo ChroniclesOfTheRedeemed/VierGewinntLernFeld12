@@ -25,6 +25,7 @@ class Api:
         game_finish = "game_state"
         player_profile = "profile"
         ok = "ok"
+        last_move = "last_move"
 
 
 class BadRequestException(Exception):

@@ -10,6 +10,7 @@ class Status4G:
         self.SpielFeld = []
         self.player1turn = True
         self.result = ongoing
+        self.last_move = (-1, -1)
 
 
 class GameObserver:
