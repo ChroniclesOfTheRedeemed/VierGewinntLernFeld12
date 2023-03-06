@@ -1,46 +1,15 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, request, render_template, redirect, url_for, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
 from V4State import Status4G
-from ViergewinntManager import GameManagement, game_manager
-from user_management import UserManagement, user_manager
+from ViergewinntManager import game_manager
+from constants import Api
+from user_management import user_manager
 
 app = Flask(__name__)
 CORS(app)
-
-
-class Api:
-
-    class Url:
-        create_user = "/create_user"
-        login = "/login"
-        logout = "/logout"
-        get_profile = "/get_profile"
-        state = "/state"
-        move = "/move"
-        request_game = "/request_game"
-
-    class Json:
-        username = "username"
-        password = "password"
-        move = "coloumnNumber"
-        token = "token"
-        match_type = "match_type"
-        status_name = "status"
-        match_type_solo = "solo"
-        player1turn = "player1turn"
-        game_field = "game_field"
-        player1 = "player1"
-        player2 = "player2"
-        game_finish = "game_state"
-        player_profile = "profile"
-        ok = "ok"
-
-
-class BadRequestException(Exception):
-    pass
 
 
 @app.route(Api.Url.create_user, methods=['POST'])
@@ -137,13 +106,14 @@ def move():
     validation, properties = validate_request([Api.Json.token, Api.Json.move], request)
     if validation == Api.Json.ok:
         status, game_state, player1_name, player2_name = game_manager.make_move(*properties)
-        response = create_game_state(game_state, player1_name, player2_name)
-        response[Api.Json.status_name] = status
-        return jsonify(response)
+        if status == Api.Json.ok:
+            response = create_game_state(game_state, player1_name, player2_name)
+            response[Api.Json.status_name] = status
+        else:
+            response = {Api.Json.status_name: status}
     else:
-        return jsonify({
-            Api.Json.status_name: validation
-        })
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 def create_game_state(game_state: Status4G, player1_name, player2_name):

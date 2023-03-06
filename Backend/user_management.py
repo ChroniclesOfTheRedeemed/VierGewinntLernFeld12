@@ -1,6 +1,6 @@
 import random
 
-from flask_app import Api
+from constants import Api
 from persistenceapi import Persistence
 
 import bcrypt
