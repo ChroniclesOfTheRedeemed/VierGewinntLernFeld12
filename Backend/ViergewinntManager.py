@@ -18,10 +18,80 @@ class GameObserver:
 
 class GameManagement(GameObserver):
 
+    # session data format:
+    # sessions =  {
+    #   token1: game1,
+    #   token2: game1}
+    # challenges data format:
+    # challenges = {
+    #   token1:[challenger_username1, challenger2_username1]
     def __init__(self):
         self.db = Persistence()
         self.player1_sessions = {}
         self.player2_sessions = {}
+        self.challenges = {}
+
+    # check opponent is online
+    #   check opponent is not in game
+    #       check if I have been challenged by opponent already
+    #           -> start game
+    #       if not
+    #           add challenges on enemy
+    def challenge(self, token, opponent):
+        opponent_token = user_manager.get_token_by_user(opponent)
+        status = "ok"
+        if opponent_token:
+            game = self.check_ongoing_game(opponent_token)
+            if game:
+                status = "Opponent is busy"
+            else:
+                if self.is_challenged(token, opponent_token):
+                    # start game
+                    pass
+                else:
+                    if opponent_token in self.challenges:
+                        self.challenges[opponent_token].append(user_manager.sessions[token])
+                    else:
+                        self.challenges[opponent_token] = [user_manager.sessions[token]]
+        else:
+            status = "Opponent is not available."
+        # check opponent available
+        # add to self challenges
+        return status
+
+    def is_challenged(self, token, by_user):
+        return by_user in self.challenges[token]
+
+    def fetch_challenges(self, token):
+        return self.challenges[token] if token in self.challenges else []
+
+    def forfeit_match(self, token):
+        # some game over logic maybe?
+        # also maybe don't access state value directly but use function to forfeit :D
+        game = self.check_ongoing_game(token)
+        user = user_manager.sessions[token]
+        if game:
+            if user in self.player1_sessions:
+                game.State.result = V4State.player2wins
+            if user in self.player2_sessions:
+                game.State.result = V4State.player1wins
+            return "ok"
+        else:
+            return "no ongoing game found"
+
+    def check_ongoing_game(self, token):
+        game: Viergewinnt
+        user = user_manager.sessions[token]
+        if user in self.player1_sessions:
+            game = self.player1_sessions[user]
+        elif user in self.player2_sessions:
+            game = self.player2_sessions[user]
+        else:
+            return None
+        if game.State.result != V4State.player1wins \
+                and game.State.result != V4State.player2wins \
+                and game.State.result != V4State.draw:
+            return game
 
     def fetch_state(self, token):
         user_name = user_manager.sessions[token]
@@ -38,14 +108,21 @@ class GameManagement(GameObserver):
 
     def request_solo_game(self, token):
         game = Viergewinnt(self)
-        print( )
-        print("hier")
-        print(user_manager.sessions)
         user_name = user_manager.sessions[token]
         self.player1_sessions[user_name] = game
         self.player2_sessions[user_name] = game
         token1, token2 = self.get_usernames_by_game_id(game.id)
         return "ok", game.State, token1, token2
+
+    # start game
+    #    add session to both users
+    #   init game
+    #   remove challenges on both users
+    def start_game(self, user1, user2):
+        game = Viergewinnt(self)
+        self.player1_sessions[user1] = game
+        self.player2_sessions[user2] = game
+        return "ok", game.State, user1, user2
 
     def make_move(self, token, move):
         status = "ok"
@@ -77,13 +154,6 @@ class GameManagement(GameObserver):
         else:
             token1, token2 = self.get_usernames_by_game_id(game.id)
             return status, game.State, token1, token2
-
-
-    def fetch_invites(self):
-        pass
-
-    def accept_invite(self):
-        pass
 
     def get_game_by_user(self, user_name) -> Viergewinnt:
         if user_name in self.player1_sessions:

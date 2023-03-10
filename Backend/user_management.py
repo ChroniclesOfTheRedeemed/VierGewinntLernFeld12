@@ -50,5 +50,9 @@ class UserManagement:
     def validate_token(self, token) -> bool:
         return token in self.sessions
 
+    def get_token_by_user(self, user):
+        array = [key for key, value in self.sessions.items() if value == user]
+        return array[0] if len(array) > 0 else None
+
 
 user_manager = UserManagement()

@@ -17,7 +17,6 @@ CORS(app)
 def create_user():
     validation, properties = validate_request([Api.Json.username, Api.Json.password], request)
     if validation == Api.Json.ok:
-
         status, result = user_manager.add_user(*properties)
         response = {
             Api.Json.token: result,
@@ -79,14 +78,19 @@ def get_game_state():
         })
 
 
-@app.route(Api.Url.request_game, methods=['POST'])
+@app.route(Api.Url.challenge, methods=['POST'])
 @cross_origin()
 def request_game():
-    validation, properties = validate_request([Api.Json.token, Api.Json.match_type], request)
+    validation, properties = validate_request([Api.Json.token, Api.Json.username], request)
     if validation == Api.Json.ok:
-        r_token, r_match_type = properties
+        r_token, r_username = properties
         response = {}
+        user = user_manager.sessions[r_token]
         if r_match_type == Api.Json.match_type_solo:
+            user = user_manager.sessions[r_token]
+            status, game_state, player1_name, player2_name = game_manager.start_game(user, user)
+            # response = create_game_state(game_state, player1_name, player2_name)
+        elif r_match_type == Api.Json.match_made:
             status, game_state, player1_name, player2_name = game_manager.request_solo_game(r_token)
             response = create_game_state(game_state, player1_name, player2_name)
         else:
@@ -100,6 +104,22 @@ def request_game():
         })
 
 
+@app.route(Api.Url.fetch_challenges, methods=['GET'])
+@cross_origin()
+def fetch_challenges():
+    validation, properties = validate_request([Api.Json.token], request)
+    if validation == Api.Json.ok:
+        status, challenges = game_manager.fetch_challenges(*properties)
+        if status == Api.Json.ok:
+            response = challenges
+            response[Api.Json.status_name] = status
+        else:
+            response = {Api.Json.status_name: status}
+    else:
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
+
+
 @app.route(Api.Url.move, methods=['POST'])
 @cross_origin()
 def move():
@@ -111,6 +131,18 @@ def move():
             response[Api.Json.status_name] = status
         else:
             response = {Api.Json.status_name: status}
+    else:
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
+
+
+@app.route(Api.Url.forfeit, methods=['POST'])
+@cross_origin()
+def forfeit():
+    validation, properties = validate_request([Api.Json.token], request)
+    if validation == Api.Json.ok:
+        status = game_manager.forfeit_match(*properties)
+        response = {Api.Json.status_name: status}
     else:
         response = {Api.Json.status_name: validation}
     return jsonify(response)
@@ -138,11 +170,12 @@ def validate_request(args: list, request_to_validate):
     json = request_to_validate.json
     props = find_properties_in_answer(args, json)
     status = Api.Json.ok
-    if Api.Json.token in args:
-        if not user_manager.validate_token(props[args.index(Api.Json.token)]):
-            status = "bad request"
     if not props:
         status = "bad request"
+    elif Api.Json.token in args:
+        if not user_manager.validate_token(props[args.index(Api.Json.token)]):
+            status = "bad request"
+
     return status, props
 
 

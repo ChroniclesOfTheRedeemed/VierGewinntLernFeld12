@@ -8,7 +8,9 @@ class Api:
         get_profile = "/get_profile"
         state = "/state"
         move = "/move"
-        request_game = "/request_game"
+        challenge = "/request_game"
+        fetch_challenges = "/fetch_challenges"
+        forfeit = "/forfeit_game"
 
     class Json:
         username = "username"
@@ -18,6 +20,7 @@ class Api:
         match_type = "match_type"
         status_name = "status"
         match_type_solo = "solo"
+        match_made = "match"
         player1turn = "player1turn"
         game_field = "game_field"
         player1 = "player1"

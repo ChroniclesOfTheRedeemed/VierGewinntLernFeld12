@@ -1,5 +1,5 @@
 player1wins = "player1wins"
-player2wins = "player1wins"
+player2wins = "player2wins"
 draw = "draw"
 ongoing = "ongoing"
 
