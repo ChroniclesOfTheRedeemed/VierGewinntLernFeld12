@@ -1,4 +1,4 @@
-from json_storer import Storer
+from src.json_storer import Storer
 
 user_file = "users"
 

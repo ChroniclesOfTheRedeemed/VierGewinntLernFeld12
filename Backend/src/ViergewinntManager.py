@@ -1,9 +1,10 @@
-import V4State
-from persistenceapi import Persistence
+from src import V4State
+from src.persistenceapi import Persistence
+from src.user_management import user_manager
+from src.vergewinntspiel import Viergewinnt
+
 
 # Declaring our password
-from user_management import user_manager
-from vergewinntspiel import Viergewinnt
 
 
 # exclude datatype logic from business logic / how to access objects -> capsule in getter

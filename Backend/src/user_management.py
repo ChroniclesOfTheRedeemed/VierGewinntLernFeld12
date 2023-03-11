@@ -1,9 +1,10 @@
 import random
 
-from constants import Api
-from persistenceapi import Persistence
 
 import bcrypt
+
+from src.constants import Api
+from src.persistenceapi import Persistence
 
 
 # Declaring our password

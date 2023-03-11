@@ -1,7 +1,7 @@
 import copy
 
-import V4State
-from V4State import Status4G, BadMoveException, GameObserver
+from src import V4State
+from src.V4State import BadMoveException, Status4G, GameObserver
 
 
 class Viergewinnt:

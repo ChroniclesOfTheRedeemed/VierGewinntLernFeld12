@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from flask_app import find_properties_in_answer
+from src.flask_app import find_properties_in_answer
 
 
 class Test(TestCase):

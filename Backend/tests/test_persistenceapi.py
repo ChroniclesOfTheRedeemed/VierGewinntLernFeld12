@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from persistenceapi import Persistence
+from src.persistenceapi import Persistence
 
 
 class Testpersistence(TestCase):
