@@ -1,14 +1,12 @@
-import random
-
 import V4State
 from persistenceapi import Persistence
-
-import bcrypt
 
 # Declaring our password
 from user_management import user_manager
 from vergewinntspiel import Viergewinnt
 
+
+# exclude datatype logic from business logic / how to access objects -> capsule in getter
 
 class GameObserver:
 
@@ -20,8 +18,8 @@ class GameManagement(GameObserver):
 
     # session data format:
     # sessions =  {
-    #   token1: game1,
-    #   token2: game1}
+    #   user1: game1,
+    #   user2: game1}
     # challenges data format:
     # challenges = {
     #   token1:[challenger_username1, challenger2_username1]
@@ -40,19 +38,20 @@ class GameManagement(GameObserver):
     def challenge(self, token, opponent):
         opponent_token = user_manager.get_token_by_user(opponent)
         status = "ok"
+        challenger = user_manager.sessions[token]
         if opponent_token:
             game = self.check_ongoing_game(opponent_token)
             if game:
                 status = "Opponent is busy"
             else:
-                if self.is_challenged(token, opponent_token):
-                    # start game
+                if self.is_challenged(token, opponent):
+                    self.start_game(challenger, opponent)
                     pass
                 else:
                     if opponent_token in self.challenges:
                         self.challenges[opponent_token].append(user_manager.sessions[token])
                     else:
-                        self.challenges[opponent_token] = [user_manager.sessions[token]]
+                        self.challenges[opponent_token] = [challenger]
         else:
             status = "Opponent is not available."
         # check opponent available
@@ -60,7 +59,7 @@ class GameManagement(GameObserver):
         return status
 
     def is_challenged(self, token, by_user):
-        return by_user in self.challenges[token]
+        return by_user in self.challenges[token] if token in self.challenges else False
 
     def fetch_challenges(self, token):
         return self.challenges[token] if token in self.challenges else []
@@ -106,13 +105,13 @@ class GameManagement(GameObserver):
         token1, token2 = self.get_usernames_by_game_id(game.id)
         return status, game.State, token1, token2
 
-    def request_solo_game(self, token):
-        game = Viergewinnt(self)
-        user_name = user_manager.sessions[token]
-        self.player1_sessions[user_name] = game
-        self.player2_sessions[user_name] = game
-        token1, token2 = self.get_usernames_by_game_id(game.id)
-        return "ok", game.State, token1, token2
+    # def request_solo_game(self, token):
+    #     game = Viergewinnt(self)
+    #     user_name = user_manager.sessions[token]
+    #     self.player1_sessions[user_name] = game
+    #     self.player2_sessions[user_name] = game
+    #     token1, token2 = self.get_usernames_by_game_id(game.id)
+    #     return "ok", game.State, token1, token2
 
     # start game
     #    add session to both users
@@ -120,9 +119,14 @@ class GameManagement(GameObserver):
     #   remove challenges on both users
     def start_game(self, user1, user2):
         game = Viergewinnt(self)
+        self.remove_challenges(user_manager.get_token_by_user(user1))
+        self.remove_challenges(user_manager.get_token_by_user(user2))
         self.player1_sessions[user1] = game
         self.player2_sessions[user2] = game
-        return "ok", game.State, user1, user2
+        return "ok"
+
+    def remove_challenges(self, token):
+        self.challenges[token] = []
 
     def make_move(self, token, move):
         status = "ok"

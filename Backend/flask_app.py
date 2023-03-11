@@ -80,21 +80,18 @@ def get_game_state():
 
 @app.route(Api.Url.challenge, methods=['POST'])
 @cross_origin()
-def request_game():
+def challenge():
     validation, properties = validate_request([Api.Json.token, Api.Json.username], request)
     if validation == Api.Json.ok:
-        r_token, r_username = properties
+        r_token, opponent_name = properties
         response = {}
         user = user_manager.sessions[r_token]
-        if r_match_type == Api.Json.match_type_solo:
-            user = user_manager.sessions[r_token]
-            status, game_state, player1_name, player2_name = game_manager.start_game(user, user)
-            # response = create_game_state(game_state, player1_name, player2_name)
-        elif r_match_type == Api.Json.match_made:
-            status, game_state, player1_name, player2_name = game_manager.request_solo_game(r_token)
-            response = create_game_state(game_state, player1_name, player2_name)
+        if user == opponent_name:
+            status = game_manager.start_game(user, user)
+        elif game_manager.is_challenged(r_token, opponent_name):
+            status = game_manager.start_game(user, opponent_name)
         else:
-            status = "unknown match type"
+            status = game_manager.challenge(r_token, opponent_name)
 
         response[Api.Json.status_name] = status
         return jsonify(response)
