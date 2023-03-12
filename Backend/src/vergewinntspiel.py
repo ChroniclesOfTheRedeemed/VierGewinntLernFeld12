@@ -1,15 +1,15 @@
 import copy
 
 from src import V4State
-from src.V4State import BadMoveException, Status4G, GameObserver
+from src.V4State import BadMoveException, Status4G
 
 
 class Viergewinnt:
-    ids = 0
+    #ids = 0
 
-    def __init__(self, observer: GameObserver):
-        self.id = Viergewinnt.ids + 1
-        Viergewinnt.ids += 1
+    def __init__(self):
+       # self.id = Viergewinnt.ids + 1
+        #Viergewinnt.ids += 1
         self.breite = 7
         self.hoehe = 6
         self.feldleer = 0
@@ -20,8 +20,7 @@ class Viergewinnt:
         self.FirstMove = -1
         self.movesDone = 0
         self.State = Status4G()
-        self.game_observer = observer
-        self.State.SpielFeld = [[self.feldleer for item in range(0, self.hoehe)] for item in range(0, self.breite)]
+        self.State.SpielFeld = [[self.feldleer for _ in range(0, self.hoehe)] for _ in range(0, self.breite)]
 
     def getGameState(self):
         newState = Status4G()
@@ -33,7 +32,7 @@ class Viergewinnt:
         if self.State.result == V4State.ongoing:
             self.checkMove(move)
             levelOfMove = self.updateSpielFeld(move)
-            self.updateGameStatus(move=move, levelOfMove=levelOfMove)
+            self.updateGameStatus(move=move, level_of_move=levelOfMove)
             return levelOfMove
         else:
             raise V4State.GameEndedException()
@@ -119,7 +118,7 @@ class Viergewinnt:
                 mark = self.State.SpielFeld[move][row]
         return mark
 
-    def updateSpielFeld(self, checkedMove):
+    def updateSpielFeld(self, checked_move):
         if self.State.player1turn:
             mark = self.spieler1mark
         else:
@@ -127,22 +126,22 @@ class Viergewinnt:
 
         level = 0
         for level in range(0, self.hoehe):
-            if self.State.SpielFeld[checkedMove][level] is self.feldleer:
-                self.State.SpielFeld[checkedMove][level] = mark
-                self.State.last_move = (checkedMove, level)
+            if self.State.SpielFeld[checked_move][level] is self.feldleer:
+                self.State.SpielFeld[checked_move][level] = mark
+                self.State.last_move = (checked_move, level)
                 break
         self.movesDone += 1
         self.State.player1turn = not self.State.player1turn
         return level
 
-    def updateGameStatus(self, move, levelOfMove):
+    def updateGameStatus(self, move, level_of_move):
         won = 0
-        if self.gameWon(move=move, level=levelOfMove):
+        if self.gameWon(move=move, level=level_of_move):
             won = self.getMarkOfLastMove(move=move)
         else:
             if not self.gameDraw():
                 return
-        self.game_observer.gameOver(won, self.id)
+        # self.game_observer.gameOver(won, self.id)
         self.State.result = V4State.player1wins if won else V4State.player2wins
         # self.__init__(self.game_observer)
 

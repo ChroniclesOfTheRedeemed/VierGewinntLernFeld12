@@ -16,3 +16,8 @@ class Test(TestCase):
         r = find_properties_in_answer(args, json)
         a, b, c, d = r
         print(a, b, c, d)
+
+
+# class Test(TestCase):
+#     def test_validate_request(self):
+#         self.fail()

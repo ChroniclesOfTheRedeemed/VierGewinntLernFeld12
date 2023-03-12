@@ -13,12 +13,6 @@ class Status4G:
         self.last_move = (-1, -1)
 
 
-class GameObserver:
-
-    def gameOver(self, player1wins, game_id):
-        pass
-
-
 class BadMoveException(Exception):
     pass
 

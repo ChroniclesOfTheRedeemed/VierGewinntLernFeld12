@@ -119,7 +119,7 @@ class GameManagement(GameObserver):
     #   init game
     #   remove challenges on both users
     def start_game(self, user1, user2):
-        game = Viergewinnt(self)
+        game = Viergewinnt()
         self.remove_challenges(user_manager.get_token_by_user(user1))
         self.remove_challenges(user_manager.get_token_by_user(user2))
         self.player1_sessions[user1] = game
@@ -182,9 +182,6 @@ class GameManagement(GameObserver):
     def get_userame_from_token(self, token):
         return user_manager.sessions[token]
 
-    def gameOver(self, player1wins, game_id):
-        print("GAMMEEEE OVEEEER")
-        pass
 
 
 game_manager = GameManagement()
