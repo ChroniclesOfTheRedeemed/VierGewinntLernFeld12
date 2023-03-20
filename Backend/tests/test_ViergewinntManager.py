@@ -5,73 +5,74 @@ from src.user_management import user_manager
 
 
 class TestGameManagement(TestCase):
-    # def test_request_solo_game(self):
-    #     token = user_manager.login("admin", "admins")
-    #     print(game_manager.request_solo_game(token))
-    #
-    # def test_fetch_state(self):
-    #     token = user_manager.login("admin", "admins")
-    #     print(game_manager.request_solo_game(token))
-    #     print()
-    #     print(game_manager.fetch_state(token))
-    #
-    # def test_viergewinnt(self):
-    #     token = user_manager.login("admin", "admins")
-    #     print(game_manager.request_solo_game(token))
-    #     print()
-    #     print(game_manager.fetch_state(token))
-    #     print(game_manager.make_move(token, 1))
-    #     print(game_manager.make_move(token, 2))
-    #     print(game_manager.make_move(token, 1))
-    #     print(game_manager.make_move(token, 2))
-    #     print(game_manager.make_move(token, 1))
-    #     print(game_manager.make_move(token, 2))
-    #     print(game_manager.make_move(token, 1))
-    #     print(game_manager.make_move(token, 2))
-    #     print(game_manager.make_move(token, 1))
-    #     print(game_manager.make_move(token, 2))
-    #
-    # def test_check_ongoing_game(self):
-    #     status, token = user_manager.login("admin", "admins")
-    #     game_manager.request_solo_game(token)
-    #
-    #     print(game_manager.check_ongoing_game(token))
-    #     game_manager.forfeit_match(token)
-    #     print(game_manager.check_ongoing_game(token))
 
     def test_challenge(self):
         status, token = user_manager.login("admin", "admins")
+
+        print("challenges: ", game_manager.fetch_challenges(token))
+        self.assertFalse("admin" in game_manager.fetch_challenges(token)[1])
+
         game_manager.challenge(token, "admin")
 
-        print(game_manager.check_ongoing_game(token))
+        print("Ongoing game: ", game_manager.check_ongoing_game(token))
+        self.assertIsNone(game_manager.check_ongoing_game(token))
 
-        print(game_manager.fetch_challenges(token), "chall")
+        print("challenges: ", game_manager.fetch_challenges(token))
+        self.assertTrue("admin" in game_manager.fetch_challenges(token)[1])
+
         game_manager.challenge(token, "admin")
 
-        print(game_manager.check_ongoing_game(token))
+        print("Ongoing game: ", game_manager.check_ongoing_game(token))
+        self.assertIsNotNone(game_manager.check_ongoing_game(token))
 
     def test_challenge_2(self):
         status, token = user_manager.login("admin", "admins")
         status2, token2 = user_manager.login("admina", "admins")
+
+        # one sided challenge active
         game_manager.challenge(token, "admina")
 
-        print(game_manager.check_ongoing_game(token))
+        print("challenges: ", game_manager.fetch_challenges(token2))
+        self.assertTrue("admin" in game_manager.fetch_challenges(token2)[1])
 
-        print(game_manager.fetch_challenges(token2), "chall")
+        print("Ongoing game: ", game_manager.check_ongoing_game(token))
+        self.assertIsNone(game_manager.check_ongoing_game(token))
+
+        print("challenges: ", game_manager.fetch_challenges(token))
+        self.assertFalse("admin" in game_manager.fetch_challenges(token)[1])
+
+        # both sided activates game
         game_manager.challenge(token2, "admin")
-        print(game_manager.fetch_challenges(token2), "chall")
-        print(game_manager.fetch_challenges(token), "chall")
 
-        print(game_manager.check_ongoing_game(token))
+        print("challenges: ", game_manager.fetch_challenges(token2))
+        self.assertTrue(len(game_manager.fetch_challenges(token)[1]) == 0)
+
+        print("challenges: ", game_manager.fetch_challenges(token2))
+        self.assertFalse("admina" in game_manager.fetch_challenges(token)[1])
+
+        print("Ongoing game: ", game_manager.check_ongoing_game(token))
+        self.assertIsNotNone(game_manager.check_ongoing_game(token))
+
+        print(game_manager.make_move(token, 3)[1].result)
+        print(game_manager.make_move(token2, 2))
+        print(game_manager.make_move(token2, 2))
+        print(game_manager.fetch_state(token))
+        print(game_manager.fetch_state(token2))
+        print(game_manager.make_move(token, 3)[1].result)
+        print(game_manager.make_move(token2, 2))
+        print(game_manager.make_move(token, 3)[1].result)
+        print(game_manager.make_move(token2, 2))
+        print(game_manager.make_move(token, 3)[1].result)
+        print(game_manager.make_move(token2, 2))
+        print(game_manager.make_move(token, 3)[1].result)
+        print(game_manager.make_move(token2, 2))
+        print(game_manager.fetch_state(token)[1].result)
+        print(game_manager.fetch_state(token2)[1].result)
 
     def test_challenge_3(self):
         status, token = user_manager.login("admin", "admins")
         status2, token2 = user_manager.login("admina", "admins")
         game_manager.challenge(token, "admina")
-
-        print(game_manager.check_ongoing_game(token))
-
-        print(game_manager.fetch_challenges(token2), "chall")
         game_manager.challenge(token2, "admin")
         print(game_manager.fetch_challenges(token2), "chall")
         print(game_manager.fetch_challenges(token), "chall")
@@ -89,10 +90,6 @@ class TestGameManagement(TestCase):
         print(game_manager.make_move(token2, 2))
         print(game_manager.make_move(token, 3)[1].result)
         print(game_manager.make_move(token2, 2))
-
-
-
-
 
         # coverage run --source=./tests -m unittest discover -s tests/ && coverage html
         # coverage run --source=./tests -m unittest discover -s tests/ && coverage report

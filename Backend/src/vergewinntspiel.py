@@ -5,11 +5,11 @@ from src.V4State import BadMoveException, Status4G
 
 
 class Viergewinnt:
-    #ids = 0
+    ids = 0
 
     def __init__(self):
-       # self.id = Viergewinnt.ids + 1
-        #Viergewinnt.ids += 1
+        self.id = Viergewinnt.ids + 1
+        Viergewinnt.ids += 1
         self.breite = 7
         self.hoehe = 6
         self.feldleer = 0

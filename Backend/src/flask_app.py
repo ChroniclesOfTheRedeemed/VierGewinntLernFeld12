@@ -68,8 +68,12 @@ def get_game_state():
     validation, properties = validate_request([Api.Json.token], request)
     if validation == Api.Json.ok:
         status, game_state, player1_name, player2_name = game_manager.fetch_state(*properties)
-        response = create_game_state(game_state, player1_name, player2_name)
-        response[Api.Json.status_name] = status
+
+        if status == Api.Json.ok:
+            response = create_game_state(game_state, player1_name, player2_name)
+            response[Api.Json.status_name] = status
+        else:
+            response = {Api.Json.status_name: status}
         return jsonify(response)
 
     else:
@@ -108,8 +112,7 @@ def fetch_challenges():
     if validation == Api.Json.ok:
         status, challenges = game_manager.fetch_challenges(*properties)
         if status == Api.Json.ok:
-            response = challenges
-            response[Api.Json.status_name] = status
+            response = {"challengers": challenges, Api.Json.status_name: status}
         else:
             response = {Api.Json.status_name: status}
     else:
@@ -171,7 +174,7 @@ def validate_request(args: list, request_to_validate):
         status = "bad request"
     elif Api.Json.token in args:
         if not user_manager.validate_token(props[args.index(Api.Json.token)]):
-            status = "bad request"
+            status = "invalid token"
 
     return status, props
 

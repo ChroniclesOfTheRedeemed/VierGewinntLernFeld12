@@ -1,5 +1,4 @@
 from src import V4State
-from src.persistenceapi import Persistence
 from src.user_management import user_manager
 from src.vergewinntspiel import Viergewinnt
 
@@ -25,7 +24,6 @@ class GameManagement(GameObserver):
     # challenges = {
     #   token1:[challenger_username1, challenger2_username1]
     def __init__(self):
-        self.db = Persistence()
         self.player1_sessions = {}
         self.player2_sessions = {}
         self.challenges = {}
@@ -63,7 +61,8 @@ class GameManagement(GameObserver):
         return by_user in self.challenges[token] if token in self.challenges else False
 
     def fetch_challenges(self, token):
-        return self.challenges[token] if token in self.challenges else []
+        uhh = ("ok", self.challenges[token]) if token in self.challenges else ("ok", [])
+        return uhh
 
     def forfeit_match(self, token):
         # some game over logic maybe?
@@ -181,7 +180,6 @@ class GameManagement(GameObserver):
 
     def get_userame_from_token(self, token):
         return user_manager.sessions[token]
-
 
 
 game_manager = GameManagement()
