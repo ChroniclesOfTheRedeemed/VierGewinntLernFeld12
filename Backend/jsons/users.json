@@ -10,5 +10,23 @@
         "profile": {
             "wins": 0
         }
+    },
+    "discord.670651941159698452": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.64Xag5KXDwSJdjrEM9LhX0t0NPH5djO'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "discord.351770205221027840": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.OpxbwCHcIWDgSx4k.T576VZE10g00UO'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "discord.<src.client_api.ClientUser object at 0x7fccd23232e0>": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.YNO5V3G/mxiblTUuygERpmrtKHWzYzC'",
+        "profile": {
+            "wins": 0
+        }
     }
 }

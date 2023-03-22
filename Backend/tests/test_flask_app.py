@@ -1,6 +1,8 @@
 from unittest import TestCase
 
-from src.flask_app import find_properties_in_answer
+from unittest import TestCase
+
+from src.flask_app import find_properties_in_answer, app
 
 
 class Test(TestCase):
@@ -18,6 +20,13 @@ class Test(TestCase):
         print(a, b, c, d)
 
 
-# class Test(TestCase):
-#     def test_validate_request(self):
-#         self.fail()
+
+class TestIntegrations(TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+
+    def test_thing(self):
+        response = self.app.post('/login', data={
+
+        })
+        print(response)
