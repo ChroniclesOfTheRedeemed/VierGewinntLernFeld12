@@ -26,7 +26,8 @@ class TestIntegrations(TestCase):
         self.app = app.test_client()
 
     def test_thing(self):
-        response = self.app.post('/login', data={
-
+        response = self.app.post('/login', json={
+            "username": "admin",
+            "password": "admins"
         })
         print(response)
