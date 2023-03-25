@@ -105,14 +105,14 @@ def challenge():
         })
 
 
-@app.route(Api.Url.fetch_challenges, methods=['GET'])
+@app.route(Api.Url.fetch_challengers, methods=['GET'])
 @cross_origin()
 def fetch_challenges():
     validation, properties = validate_request([Api.Json.token], request)
     if validation == Api.Json.ok:
-        status, challenges = game_manager.fetch_challenges(*properties)
+        status, challenges = game_manager.fetch_challengers(*properties)
         if status == Api.Json.ok:
-            response = {"challengers": challenges, Api.Json.status_name: status}
+            response = {Api.Json.challengers: challenges, Api.Json.status_name: status}
         else:
             response = {Api.Json.status_name: status}
     else:

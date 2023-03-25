@@ -60,7 +60,7 @@ class GameManagement(GameObserver):
     def is_challenged(self, token, by_user):
         return by_user in self.challenges[token] if token in self.challenges else False
 
-    def fetch_challenges(self, token):
+    def fetch_challengers(self, token):
         uhh = ("ok", self.challenges[token]) if token in self.challenges else ("ok", [])
         return uhh
 
@@ -129,7 +129,7 @@ class GameManagement(GameObserver):
         self.challenges[token] = []
 
     def make_move(self, token, move):
-        status = "ok"
+        status = "not your turn"
         user_name = user_manager.sessions[token]
         player1_moved = False
         game = None
@@ -137,6 +137,7 @@ class GameManagement(GameObserver):
             game = self.player1_sessions[user_name]
             if game.State.player1turn:
                 try:
+                    status = "ok"
                     game.playerMadeMove(move)
                     player1_moved = True
                 except V4State.BadMoveException:
@@ -147,6 +148,7 @@ class GameManagement(GameObserver):
             game = self.player2_sessions[user_name]
             if not game.State.player1turn:
                 try:
+                    status = "ok"
                     game.playerMadeMove(move)
                 except V4State.BadMoveException:
                     status = "bad move"

@@ -9,7 +9,7 @@ class Api:
         state = "/state"
         move = "/move"
         challenge = "/request_game"
-        fetch_challenges = "/fetch_challenges"
+        fetch_challengers = "/fetch_challengers"
         forfeit = "/forfeit_game"
 
     class Json:
@@ -29,6 +29,7 @@ class Api:
         player_profile = "profile"
         ok = "ok"
         last_move = "last_move"
+        challengers = "challengers"
 
 
 class BadRequestException(Exception):
