@@ -1,6 +1,14 @@
+from enum import Enum
+
 from flask.testing import FlaskClient
 
+from src import V4State
 from src.constants import Api
+
+expected_result = "game result"
+moves_player1 = "m1"
+moves_player2 = "m2"
+json_message = "message"
 
 
 class GameResponse:
@@ -54,3 +62,84 @@ class ApiAbUser:
             Api.Json.token: self.token
         }).json
         return game_response[Api.Json.challengers]
+
+    def forfeit_util(self) -> []:
+        game_response = self.client.post(Api.Url.forfeit, json={
+            Api.Json.token: self.token
+        }).json
+        return game_response[Api.Json.status_name]
+
+
+class games_and_expectations:
+    player1_vertical_win = {
+        json_message: "vertical win for player 1",
+        moves_player1: [
+            1, 1, 1, 1
+        ],
+        moves_player2: [
+            2, 2, 2
+        ],
+        expected_result: V4State.player1wins
+    }
+
+    player1_horizontal_win = {
+        json_message: "horizontal win for player 1",
+        moves_player1: [
+            1, 2, 3, 4
+        ],
+        moves_player2: [
+            1, 2, 3
+        ],
+        expected_result: V4State.player1wins
+    }
+    player1_diagonal_win = {
+        json_message: "diagonal win for player 1",
+        moves_player1: [
+            1, 2, 3, 3, 1, 4
+        ],
+        moves_player2: [
+            2, 3, 4, 4, 4
+        ],
+        expected_result: V4State.player1wins
+    }
+    player2_vertical_win = {
+        json_message: "vertical win for player 2",
+        moves_player1: [
+            5, 2, 2, 2
+        ],
+        moves_player2: [
+            1, 1, 1, 1
+        ],
+        expected_result: V4State.player2wins
+    }
+
+    player2_horizontal_win = {
+        json_message: "horizontal win for player 2",
+        moves_player1: [
+            5, 1, 2, 3
+        ],
+        moves_player2: [
+            1, 2, 3, 4
+        ],
+        expected_result: V4State.player2wins
+    }
+    player2_diagonal_win = {
+        json_message: "diagonal win for player 2",
+        moves_player1: [
+            6, 2, 3, 4, 4, 4
+        ],
+        moves_player2: [
+            1, 2, 3, 3, 1, 4
+        ],
+        expected_result: V4State.player2wins
+    }
+
+
+normal_wins = [
+    games_and_expectations.player1_vertical_win,
+    games_and_expectations.player1_horizontal_win,
+    games_and_expectations.player1_diagonal_win,
+    games_and_expectations.player2_vertical_win,
+    games_and_expectations.player2_horizontal_win,
+    games_and_expectations.player2_diagonal_win
+]

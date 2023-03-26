@@ -4,6 +4,7 @@ from unittest import TestCase
 
 from flask.testing import FlaskClient
 
+from src import V4State
 from src.constants import Api
 from src.flask_app import find_properties_in_answer, app
 from tests.utils import ApiAbUser
@@ -30,22 +31,35 @@ class TestIntegrations(TestCase):
         self.player1 = ApiAbUser("admin", "admins", self.app)
         self.player2 = ApiAbUser("admina", "admins", self.app)
 
-    def test_thing(self):
-        response = self.app.post('/login', json={
-            "username": "admin",
-            "password": "admins"
-        })
-        print(response)
-
-        # test game start -
-
     def test_game_forfeit(self):
         self.start_game(self.player1, self.player2)
         # two players play set of moves
-
-        # forfeit game
+        moves_double_array = [[1, 2, 1, 2, 1, 5],
+                              [2, 3, 3, 5, 2, 1]]
+        self.play_a_set_of_moves(self.player2, self.player1, moves_double_array)
+        self.forfeit_the_game(self.player1, self.player2, True)
 
         # interpret result
+
+    # theoretically I only need loser
+    # I can get winner by finding opponent through game
+    # I can also get the player position through the game
+    # choose this because I don't care, it's fine for now
+    def forfeit_the_game(self, loser: ApiAbUser, winner: ApiAbUser, loser_is_player1):
+        self.assertEqual(loser.fetch_game().game_status, V4State.ongoing)
+        response = loser.forfeit_util()
+        result_after_ff = V4State.player1wins if loser_is_player1 else V4State.player2wins
+        self.assertEqual(response, Api.Json.ok)
+        self.assertEqual(loser.fetch_game().game_status, result_after_ff)
+        response = winner.forfeit_util()
+        self.assertEqual(winner.fetch_game().game_status, result_after_ff)
+        self.assertNotEqual(response, Api.Json.ok)
+        response = loser.forfeit_util()
+        self.assertEqual(winner.fetch_game().game_status, result_after_ff)
+        self.assertNotEqual(response, Api.Json.ok)
+
+        self.assertNotEqual(loser.move(1), "ok")
+        self.assertNotEqual(winner.move(1), "ok")
 
     def start_game(self, user1: ApiAbUser, user2: ApiAbUser):
         # verify not challenged yet
@@ -79,31 +93,17 @@ class TestIntegrations(TestCase):
         self.assertEqual(user2.fetch_game().player1, user2.name)
         self.assertEqual(user2.fetch_game().player2, user1.name)
         # have player 2 attempt to make a move
-        #self.assertNotEqual(user2.move(3).status, "ok")
-        print("-------")
-        print("-------")
-        print("-------")
-        print("-------")
-        print("-------")
         self.assertNotEqual(user1.move(3).status, "ok")
 
     def play_a_set_of_moves(self, user1: ApiAbUser, user2: ApiAbUser, moves_double_array: []):
-
-        moves_double_array = [[1, 2, 1, 2, 1, 1],
-                 [2, 3, 3, 5, 2, 1]]
         for index in range(0, len(moves_double_array[0])):
             user1.move(moves_double_array[0][index])
-            user1.move(3)
+            self.assertEqual(user2.fetch_game().last_move[0], moves_double_array[0][index])
+            self.assertNotEqual(user1.move(3).status, "ok")
             if index < len(moves_double_array[1]):
                 user2.move(moves_double_array[1][index])
-                user2.move(2)
-
-        # player 2 tries to make first move
-        # player 1 makes first move
-        # player iterating over move set -> everytime same players tries to make an additional move
-
-    def test_logoff_during_game(self):
-        pass
+                self.assertEqual(user2.fetch_game().last_move[0], moves_double_array[1][index])
+                self.assertNotEqual(user2.move(3).status, "ok")
 
     def test_large_duel_integration_test(self):
         pass
