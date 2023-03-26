@@ -32,12 +32,12 @@ class TestIntegrations(TestCase):
         self.player2 = ApiAbUser("admina", "admins", self.app)
 
     def test_game_forfeit(self):
-        self.start_game(self.player1, self.player2)
+        self.start_game_test(self.player1, self.player2)
         # two players play set of moves
         moves_double_array = [[1, 2, 1, 2, 1, 5],
                               [2, 3, 3, 5, 2, 1]]
-        self.play_a_set_of_moves(self.player2, self.player1, moves_double_array)
-        self.forfeit_the_game(self.player1, self.player2, True)
+        self.play_a_set_of_moves_test(self.player2, self.player1, moves_double_array)
+        self.forfeit_the_game_test(self.player1, self.player2, True)
 
         # interpret result
 
@@ -45,7 +45,7 @@ class TestIntegrations(TestCase):
     # I can get winner by finding opponent through game
     # I can also get the player position through the game
     # choose this because I don't care, it's fine for now
-    def forfeit_the_game(self, loser: ApiAbUser, winner: ApiAbUser, loser_is_player1):
+    def forfeit_the_game_test(self, loser: ApiAbUser, winner: ApiAbUser, loser_is_player1):
         self.assertEqual(loser.fetch_game().game_status, V4State.ongoing)
         response = loser.forfeit_util()
         result_after_ff = V4State.player1wins if loser_is_player1 else V4State.player2wins
@@ -61,7 +61,7 @@ class TestIntegrations(TestCase):
         self.assertNotEqual(loser.move(1), "ok")
         self.assertNotEqual(winner.move(1), "ok")
 
-    def start_game(self, user1: ApiAbUser, user2: ApiAbUser):
+    def start_game_test(self, user1: ApiAbUser, user2: ApiAbUser):
         # verify not challenged yet
         print(f"Expect {user1.name} not to be in {user2.fetch_challengers_util()}")
         self.assertNotIn(user1.name, user2.fetch_challengers_util())
@@ -95,7 +95,7 @@ class TestIntegrations(TestCase):
         # have player 2 attempt to make a move
         self.assertNotEqual(user1.move(3).status, "ok")
 
-    def play_a_set_of_moves(self, user1: ApiAbUser, user2: ApiAbUser, moves_double_array: []):
+    def play_a_set_of_moves_test(self, user1: ApiAbUser, user2: ApiAbUser, moves_double_array: []):
         for index in range(0, len(moves_double_array[0])):
             user1.move(moves_double_array[0][index])
             self.assertEqual(user2.fetch_game().last_move[0], moves_double_array[0][index])
@@ -105,7 +105,7 @@ class TestIntegrations(TestCase):
                 self.assertEqual(user2.fetch_game().last_move[0], moves_double_array[1][index])
                 self.assertNotEqual(user2.move(3).status, "ok")
 
-    def test_large_duel_integration_test(self):
+    def test_duel_integration_test(self):
         pass
         # 2 user login
         # challenge each other
@@ -115,7 +115,7 @@ class TestIntegrations(TestCase):
         # always check for game end
         # check post game functionalites
 
-    def test_large_duel_session_integration_test(self):
+    def test_duel_session_integration_test(self):
         pass
         # 2 user login
         # challenge each other

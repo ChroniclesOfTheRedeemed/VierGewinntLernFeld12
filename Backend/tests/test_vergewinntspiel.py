@@ -4,13 +4,11 @@ from src import V4State
 from src.V4State import GameEndedException
 from src.vergewinntspiel import Viergewinnt
 from tests import utils
-from tests.utils import games_and_expectations, normal_wins, json_message
+from tests.utils import normal_wins, json_message
 
 
 class TestViergewinnt(TestCase):
     game: Viergewinnt
-
-
 
     @classmethod
     def setUpClass(cls):
@@ -44,5 +42,4 @@ class TestViergewinnt(TestCase):
             self.assertTrue(self.game_ended(game), test_case[json_message])
             self.assertTrue(self.game_ended(game), test_case[json_message])
 
-
- # add draw win
+# add draw win
