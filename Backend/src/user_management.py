@@ -21,9 +21,13 @@ class UserManagement:
         status = "ok"
         user = self.db.load_user(username)
         if user and user.password == str(self.hash_password(password_unhashed)):
-            token = str(self.generate_random_token())
-            self.sessions[token] = username
-            return status, token
+            # log out if he was previously logged in
+            previous_token = self.get_token_by_user(user.username)
+            if previous_token:
+                self.logout(previous_token)
+            new_token = str(self.generate_random_token())
+            self.sessions[new_token] = username
+            return status, new_token
         else:
             return "invalid", "0"
 
@@ -51,7 +55,7 @@ class UserManagement:
     def validate_token(self, token) -> bool:
         return token in self.sessions
 
-    def get_token_by_user(self, user):
+    def get_token_by_user(self, user :str):
         array = [key for key, value in self.sessions.items() if value == user]
         return array[0] if len(array) > 0 else None
 
