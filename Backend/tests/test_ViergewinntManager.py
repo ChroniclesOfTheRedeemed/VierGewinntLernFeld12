@@ -35,7 +35,7 @@ class TestGameManagement(TestCase):
         status, token = user_manager.login("admin", "admins")
         status2, token2 = user_manager.login("admina", "admins")
 
-        # one sided challenge active
+        # one-sided challenge active
         game_manager.challenge(token, "admina")
 
         print("challenges: ", game_manager.fetch_challengers(token2))
@@ -97,5 +97,5 @@ class TestGameManagement(TestCase):
         print(game_manager.make_move(token, 3)[1].result)
         print(game_manager.make_move(token2, 2))
 
-        # coverage run --source=./tests -m unittest discover -s tests/ && coverage html
-        # coverage run --source=./tests -m unittest discover -s tests/ && coverage report
+        # coverage run --source=./src -m unittest discover -s tests/ && coverage html
+        # coverage run --source=./src -m unittest discover -s tests/ && coverage report

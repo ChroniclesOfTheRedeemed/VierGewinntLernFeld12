@@ -7,6 +7,7 @@ from flask.testing import FlaskClient
 from src import V4State
 from src.constants import Api
 from src.flask_app import find_properties_in_answer, app
+from tests import utils
 from tests.utils import ApiAbUser
 
 
@@ -34,34 +35,41 @@ class TestIntegrations(TestCase):
     def test_game_forfeit(self):
         self.start_game_test(self.player1, self.player2)
         # two players play set of moves
-        moves_double_array = [[1, 2, 1, 2, 1, 5],
-                              [2, 3, 3, 5, 2, 1]]
-        self.play_a_set_of_moves_test(self.player2, self.player1, moves_double_array)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.ongoing_game_1)
         self.forfeit_the_game_test(self.player1, self.player2, True)
+        self.make_sure_game_ended([self.player1, self.player2])
 
         # interpret result
+
+    def test_duel_integration_test(self):
+        self.start_game_test(self.player1, self.player2)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.player2_vertical_win)
+        self.make_sure_game_ended([self.player1, self.player2])
 
     # theoretically I only need loser
     # I can get winner by finding opponent through game
     # I can also get the player position through the game
     # choose this because I don't care, it's fine for now
     def forfeit_the_game_test(self, loser: ApiAbUser, winner: ApiAbUser, loser_is_player1):
+        # basic forfeit logic
         self.assertEqual(loser.fetch_game().game_status, V4State.ongoing)
         response = loser.forfeit_util()
         result_after_ff = V4State.player1wins if loser_is_player1 else V4State.player2wins
         self.assertEqual(response, Api.Json.ok)
         self.assertEqual(loser.fetch_game().game_status, result_after_ff)
-        response = winner.forfeit_util()
-        self.assertEqual(winner.fetch_game().game_status, result_after_ff)
-        self.assertNotEqual(response, Api.Json.ok)
-        response = loser.forfeit_util()
-        self.assertEqual(winner.fetch_game().game_status, result_after_ff)
-        self.assertNotEqual(response, Api.Json.ok)
 
-        self.assertNotEqual(loser.move(1), "ok")
-        self.assertNotEqual(winner.move(1), "ok")
+    def make_sure_game_ended(self, players: [ApiAbUser]):
+        for player in players:
+            game_result = player.fetch_game().game_status
+            self.assertNotEqual(game_result, V4State.ongoing)
+            self.assertNotEqual(player.move(8), "ok")
+            response = player.forfeit_util()
+            self.assertNotEqual(player.move(1), "ok")
+            self.assertEqual(player.fetch_game().game_status, game_result)
+            self.assertNotEqual(response, Api.Json.ok)
 
     def start_game_test(self, user1: ApiAbUser, user2: ApiAbUser):
+
         # verify not challenged yet
         print(f"Expect {user1.name} not to be in {user2.fetch_challengers_util()}")
         self.assertNotIn(user1.name, user2.fetch_challengers_util())
@@ -95,26 +103,18 @@ class TestIntegrations(TestCase):
         # have player 2 attempt to make a move
         self.assertNotEqual(user1.move(3).status, "ok")
 
-    def play_a_set_of_moves_test(self, user1: ApiAbUser, user2: ApiAbUser, moves_double_array: []):
-        for index in range(0, len(moves_double_array[0])):
-            user1.move(moves_double_array[0][index])
-            self.assertEqual(user2.fetch_game().last_move[0], moves_double_array[0][index])
+    def play_a_set_of_moves_test(self, user1: ApiAbUser, user2: ApiAbUser, game_with_expectations: {}):
+        for index in range(0, len(game_with_expectations[utils.moves_player1])):
+            user1.move(game_with_expectations[utils.moves_player1][index])
+            self.assertEqual(user2.fetch_game().last_move[0], game_with_expectations[utils.moves_player1][index])
             self.assertNotEqual(user1.move(3).status, "ok")
-            if index < len(moves_double_array[1]):
-                user2.move(moves_double_array[1][index])
-                self.assertEqual(user2.fetch_game().last_move[0], moves_double_array[1][index])
+            if index < len(game_with_expectations[utils.moves_player2]):
+                user2.move(game_with_expectations[utils.moves_player2][index])
+                self.assertEqual(user2.fetch_game().last_move[0], game_with_expectations[utils.moves_player2][index])
                 self.assertNotEqual(user2.move(3).status, "ok")
 
-    def test_duel_integration_test(self):
-        pass
-        # 2 user login
-        # challenge each other
-        # meanwhile always checking fetch state
-        # do moves once fetch state returns game
-        # check game end start moving
-        # always check for game end
-        # check post game functionalites
-
+    # TODO log out
+    # TODO login
     def test_duel_session_integration_test(self):
         pass
         # 2 user login
@@ -123,16 +123,15 @@ class TestIntegrations(TestCase):
         # do moves once fetch state returns game
         # check game end start moving
         # always check for game end
-        # check post game functionalites
-
-    # surrender some games
-    # log in and out between games
+        # surrender some games
+        # log in and out between games (TODO)
 
     # idea is to check if states and datatypes properly support multiple games without application restart
 
     def test_large_multi_user_session_integration_test(self):
         pass
-
+        # 5 user login
+        # 2 duels, 1 solo
     # iterate fetch challenges and fetch games state spammingly
 
     # when / how often do I test bad api usage + in what way?

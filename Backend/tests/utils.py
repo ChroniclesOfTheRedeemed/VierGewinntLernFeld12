@@ -1,5 +1,3 @@
-from enum import Enum
-
 from flask.testing import FlaskClient
 
 from src import V4State
@@ -31,12 +29,14 @@ class ApiAbUser:
     def __init__(self, user_name: str, password: str, client: FlaskClient):
         self.name = user_name
         self.client = client
+        # TODO make login as extra function
         login_response = self.client.post(Api.Url.login, json={
             Api.Json.username: user_name,
             Api.Json.password: password
         }).json
         self.token = login_response[Api.Json.token]
 
+    # TODO make log out function
     def challenge(self, user_name):
         game_response = self.client.post(Api.Url.challenge, json={
             Api.Json.token: self.token,
@@ -133,7 +133,16 @@ class games_and_expectations:
         ],
         expected_result: V4State.player2wins
     }
-
+    ongoing_game_1 = {
+        json_message: "game goes on",
+        moves_player1: [
+            1, 2, 1, 2, 1, 5
+        ],
+        moves_player2: [
+            2, 3, 3, 5, 2, 1
+        ],
+        expected_result: V4State.ongoing
+    }
 
 normal_wins = [
     games_and_expectations.player1_vertical_win,
