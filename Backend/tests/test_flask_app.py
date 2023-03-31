@@ -139,29 +139,34 @@ class TestIntegrations(TestCase):
         self.make_sure_game_ended([self.player1, self.player2])
 
         self.start_game_test(self.player2, self.player1)
-        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.first_half_vertical_win_player_1)
+        self.play_a_set_of_moves_test(self.player1, self.player2,
+                                      utils.games_and_expectations.first_half_vertical_win_player_1)
 
         self.logout_test(self.player1)
         self.logout_test(self.player2)
         self.login_test(self.player1)
         self.login_test(self.player2)
 
-        self.play_a_set_of_moves_test(self.player2, self.player1,
+        self.play_a_set_of_moves_test(self.player1, self.player2,
                                       utils.games_and_expectations.second_half_vertical_win_player_1)
         self.make_sure_game_ended([self.player1, self.player2])
 
         self.logout_test(self.player1)
         self.login_test(self.player1)
 
-        # 2 user login
-        # challenge each other
-        # meanwhile always checking fetch state
-        # do moves once fetch state returns game
-        # check game end start moving
-        # always check for game end
-        # surrender some games
-        # log in and out between games (TODO)
+        self.start_game_test(self.player2, self.player1)
 
+        self.play_a_set_of_moves_test(self.player1, self.player2,
+                                      utils.games_and_expectations.first_half_vertical_win_player_1)
+
+        self.logout_test(self.player1)
+        self.forfeit_the_game_test(self.player2, self.player1, True)
+        self.login_test(self.player1)
+        self.make_sure_game_ended([self.player1, self.player2])
+
+        self.start_game_test(self.player1, self.player2)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.player2_vertical_win)
+        self.make_sure_game_ended([self.player1, self.player2])
     # idea is to check if states and datatypes properly support multiple games without application restart
 
     def test_large_multi_user_session_integration_test(self):

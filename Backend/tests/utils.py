@@ -168,14 +168,14 @@ class games_and_expectations:
             2, 2
         ],
         expected_result: V4State.ongoing
-    },
+    }
     second_half_vertical_win_player_1 = {
         json_message: "vertical_win_player_1",
         moves_player1: [
             1, 1
         ],
         moves_player2: [
-            2,
+            2
         ],
         expected_result: V4State.player1wins
     }
