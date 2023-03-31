@@ -42,15 +42,16 @@ class ApiAbUser:
             Api.Json.username: user_name,
             Api.Json.password: password
         }).json
-        self.token = login_response[Api.Json.token]
-        return self.token
+        if login_response[Api.Json.status_name] == Api.Json.ok:
+            self.token = login_response[Api.Json.token]
+        return login_response[Api.Json.status_name]
 
     def logout(self):
         logout_response = self.client.post(Api.Url.logout, json={
             Api.Json.token: self.token
-        }).json
-        self.token = logout_response[Api.Json.token]
-        return self.token
+        })
+        status = logout_response.json[Api.Json.status_name]
+        return status
 
     def challenge(self, user_name):
         game_response = self.client.post(Api.Url.challenge, json={
@@ -157,6 +158,26 @@ class games_and_expectations:
             2, 3, 3, 5, 2, 1
         ],
         expected_result: V4State.ongoing
+    },
+    first_half_vertical_win_player_1 = {
+        json_message: "game goes on",
+        moves_player1: [
+            1, 1
+        ],
+        moves_player2: [
+            2, 2
+        ],
+        expected_result: V4State.ongoing
+    },
+    second_half_vertical_win_player_1 = {
+        json_message: "vertical_win_player_1",
+        moves_player1: [
+            1, 1
+        ],
+        moves_player2: [
+            2,
+        ],
+        expected_result: V4State.player1wins
     }
 
 

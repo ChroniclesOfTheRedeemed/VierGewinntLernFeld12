@@ -68,7 +68,7 @@ class TestIntegrations(TestCase):
             self.assertEqual(player.fetch_game().game_status, game_result)
             self.assertNotEqual(response, Api.Json.ok)
 
-    def start_game_test(self, user1: ApiAbUser, user2: ApiAbUser):
+    def start_game_test(self, user1: ApiAbUser, user2: ApiAbUser, first_game=True):
 
         # verify not challenged yet
         print(f"Expect {user1.name} not to be in {user2.fetch_challengers_util()}")
@@ -113,10 +113,46 @@ class TestIntegrations(TestCase):
                 self.assertEqual(user2.fetch_game().last_move[0], game_with_expectations[utils.moves_player2][index])
                 self.assertNotEqual(user2.move(3).status, "ok")
 
-    # TODO log out
-    # TODO login
+    def login_test(self, user: ApiAbUser = None, user_name=None, password=None):
+        if user:
+            self.assertNotEqual(user.logout(), Api.Json.ok)
+            self.assertEqual(user.login(), Api.Json.ok)
+        else:
+            user = ApiAbUser(user_name, password, self.app)
+
+        self.assertNotEqual(user.login("kokoko", "eheheh"), Api.Json.ok)
+        self.assertEqual(user.login(), Api.Json.ok)
+
+        return user
+
+    def logout_test(self, user: ApiAbUser):
+        self.assertEqual(user.logout(), Api.Json.ok)
+        self.assertNotEqual(user.logout(), Api.Json.ok)
+        self.assertNotEqual(user.challenge("admin"), Api.Json.ok)
+
+    # TODO test solo challenge
     def test_duel_session_integration_test(self):
-        pass
+        self.logout_test(self.player1)
+        self.login_test(self.player1)
+        self.start_game_test(self.player1, self.player2)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.player2_vertical_win)
+        self.make_sure_game_ended([self.player1, self.player2])
+
+        self.start_game_test(self.player2, self.player1)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.first_half_vertical_win_player_1)
+
+        self.logout_test(self.player1)
+        self.logout_test(self.player2)
+        self.login_test(self.player1)
+        self.login_test(self.player2)
+
+        self.play_a_set_of_moves_test(self.player2, self.player1,
+                                      utils.games_and_expectations.second_half_vertical_win_player_1)
+        self.make_sure_game_ended([self.player1, self.player2])
+
+        self.logout_test(self.player1)
+        self.login_test(self.player1)
+
         # 2 user login
         # challenge each other
         # meanwhile always checking fetch state

@@ -12,6 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 
+# TODO clean up response so only one return jsonify is there per function
 @app.route("/test", methods=['POST'])
 @cross_origin()
 def create_userl():
@@ -47,6 +48,10 @@ def login():
             Api.Json.status_name: status
         }
         return jsonify(response)
+    else:
+        return jsonify({
+            Api.Json.status_name: validation
+        })
 
 
 @app.route(Api.Url.logout, methods=['POST'])
@@ -57,6 +62,10 @@ def logout():
         status = user_manager.logout(*properties)
         return jsonify({
             Api.Json.status_name: status
+        })
+    else:
+        return jsonify({
+            Api.Json.status_name: validation
         })
 
 
