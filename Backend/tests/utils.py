@@ -27,16 +27,31 @@ class GameResponse:
 
 class ApiAbUser:
     def __init__(self, user_name: str, password: str, client: FlaskClient):
+        self.token = None
         self.name = user_name
+        self.password = password
         self.client = client
-        # TODO make login as extra function
+        self.login(user_name, password)
+
+    def login(self, user_name=None, password=None):
+        if not user_name:
+            user_name = self.name
+        if not password:
+            password = self.password
         login_response = self.client.post(Api.Url.login, json={
             Api.Json.username: user_name,
             Api.Json.password: password
         }).json
         self.token = login_response[Api.Json.token]
+        return self.token
 
-    # TODO make log out function
+    def logout(self):
+        logout_response = self.client.post(Api.Url.logout, json={
+            Api.Json.token: self.token
+        }).json
+        self.token = logout_response[Api.Json.token]
+        return self.token
+
     def challenge(self, user_name):
         game_response = self.client.post(Api.Url.challenge, json={
             Api.Json.token: self.token,
@@ -143,6 +158,7 @@ class games_and_expectations:
         ],
         expected_result: V4State.ongoing
     }
+
 
 normal_wins = [
     games_and_expectations.player1_vertical_win,

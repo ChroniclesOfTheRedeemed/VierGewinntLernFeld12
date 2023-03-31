@@ -12,6 +12,16 @@ app = Flask(__name__)
 CORS(app)
 
 
+@app.route("/test", methods=['POST'])
+@cross_origin()
+def create_userl():
+    print("hi")
+    print(request.data)
+    print("ho")
+
+    return jsonify(request.json)
+
+
 @app.route(Api.Url.create_user, methods=['POST'])
 @cross_origin()
 def create_user():
