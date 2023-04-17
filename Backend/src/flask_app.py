@@ -12,17 +12,6 @@ app = Flask(__name__)
 CORS(app)
 
 
-# TODO clean up response so only one return jsonify is there per function
-@app.route("/test", methods=['POST'])
-@cross_origin()
-def create_userl():
-    print("hi")
-    print(request.data)
-    print("ho")
-
-    return jsonify(request.json)
-
-
 @app.route(Api.Url.create_user, methods=['POST'])
 @cross_origin()
 def create_user():
@@ -33,7 +22,9 @@ def create_user():
             Api.Json.token: result,
             Api.Json.status_name: status
         }
-        return jsonify(response)
+    else:
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 @app.route(Api.Url.get_online_list, methods=['GET'])
@@ -46,7 +37,9 @@ def get_online_list():
             Api.Json.online_player_list: result,
             Api.Json.status_name: status
         }
-        return jsonify(response)
+    else:
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 @app.route(Api.Url.login, methods=['POST'])
@@ -60,11 +53,9 @@ def login():
             Api.Json.token: result,
             Api.Json.status_name: status
         }
-        return jsonify(response)
     else:
-        return jsonify({
-            Api.Json.status_name: validation
-        })
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 @app.route(Api.Url.logout, methods=['POST'])
@@ -77,9 +68,8 @@ def logout():
             Api.Json.status_name: status
         })
     else:
-        return jsonify({
-            Api.Json.status_name: validation
-        })
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 @app.route(Api.Url.get_profile, methods=['GET'])
@@ -92,6 +82,9 @@ def get_profile():
             Api.Json.status_name: status,
             Api.Json.player_profile: profile
         })
+    else:
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 @app.route(Api.Url.state, methods=['GET'])
@@ -106,12 +99,9 @@ def get_game_state():
             response[Api.Json.status_name] = status
         else:
             response = {Api.Json.status_name: status}
-        return jsonify(response)
-
     else:
-        return jsonify({
-            Api.Json.status_name: validation
-        })
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 @app.route(Api.Url.challenge, methods=['POST'])
@@ -130,11 +120,9 @@ def challenge():
             status = game_manager.challenge(r_token, opponent_name)
 
         response[Api.Json.status_name] = status
-        return jsonify(response)
     else:
-        return jsonify({
-            Api.Json.status_name: validation
-        })
+        response = {Api.Json.status_name: validation}
+    return jsonify(response)
 
 
 @app.route(Api.Url.fetch_challengers, methods=['GET'])

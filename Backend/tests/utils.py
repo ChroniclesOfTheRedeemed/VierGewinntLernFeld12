@@ -158,7 +158,7 @@ class games_and_expectations:
             2, 3, 3, 5, 2, 1
         ],
         expected_result: V4State.ongoing
-    },
+    }
     first_half_vertical_win_player_1 = {
         json_message: "game goes on",
         moves_player1: [

@@ -33,3 +33,8 @@ Montag 27.02.23
  - JSON Frontend Serialize/Deserializing Probleme behoben
  - User Creation Page hinzugefügt
  - user creation und login api gebaut und konsumiert
+
+
+14.04
+ - wieder reinfinden in das Projekt / Sync
+ - Erweiterungsidee: Online Liste mit Spieler Status erweitern (In game)
