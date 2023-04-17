@@ -27,7 +27,7 @@ def create_user():
     return jsonify(response)
 
 
-@app.route(Api.Url.get_online_list, methods=['GET'])
+@app.route(Api.Url.get_online_list, methods=['POST'])
 @cross_origin()
 def get_online_list():
     validation, properties = validate_request([Api.Json.token], request)
@@ -72,7 +72,7 @@ def logout():
     return jsonify(response)
 
 
-@app.route(Api.Url.get_profile, methods=['GET'])
+@app.route(Api.Url.get_profile, methods=['POST'])
 @cross_origin()
 def get_profile():
     validation, properties = validate_request([Api.Json.token, Api.Json.username], request)
@@ -87,7 +87,7 @@ def get_profile():
     return jsonify(response)
 
 
-@app.route(Api.Url.state, methods=['GET'])
+@app.route(Api.Url.state, methods=['POST'])
 @cross_origin()
 def get_game_state():
     validation, properties = validate_request([Api.Json.token], request)
@@ -125,7 +125,7 @@ def challenge():
     return jsonify(response)
 
 
-@app.route(Api.Url.fetch_challengers, methods=['GET'])
+@app.route(Api.Url.fetch_challengers, methods=['POST'])
 @cross_origin()
 def fetch_challenges():
     validation, properties = validate_request([Api.Json.token], request)
