@@ -36,6 +36,19 @@ def create_user():
         return jsonify(response)
 
 
+@app.route(Api.Url.get_online_list, methods=['GET'])
+@cross_origin()
+def get_online_list():
+    validation, properties = validate_request([Api.Json.token], request)
+    if validation == Api.Json.ok:
+        status, result = user_manager.get_online_list()
+        response = {
+            Api.Json.online_player_list: result,
+            Api.Json.status_name: status
+        }
+        return jsonify(response)
+
+
 @app.route(Api.Url.login, methods=['POST'])
 @cross_origin()
 def login():

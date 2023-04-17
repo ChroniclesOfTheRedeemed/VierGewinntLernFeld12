@@ -11,6 +11,7 @@ class Api:
         challenge = "/request_game"
         fetch_challengers = "/fetch_challengers"
         forfeit = "/forfeit_game"
+        get_online_list = "/fetch_online_users"
 
     class Json:
         username = "username"
@@ -30,6 +31,7 @@ class Api:
         ok = "ok"
         last_move = "last_move"
         challengers = "challengers"
+        online_player_list = "online_player_list"
 
 
 class BadRequestException(Exception):

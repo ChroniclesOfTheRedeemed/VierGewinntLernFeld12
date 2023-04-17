@@ -25,3 +25,10 @@ class TestUserManagement(TestCase):
         print(token)
         print(token2)
         self.assertTrue(token == token2)
+
+    def test_get_online_list(self):
+        manager = UserManagement()
+        status, token = manager.login("admin", "admins")
+        status, token = manager.login("admina", "admins")
+        token2 = manager.get_token_by_user("admin")
+        print(manager.get_online_list())

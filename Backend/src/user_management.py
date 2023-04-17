@@ -1,6 +1,5 @@
 import random
 
-
 import bcrypt
 
 from src.constants import Api
@@ -55,9 +54,12 @@ class UserManagement:
     def validate_token(self, token) -> bool:
         return token in self.sessions
 
-    def get_token_by_user(self, user :str):
+    def get_token_by_user(self, user: str):
         array = [key for key, value in self.sessions.items() if value == user]
         return array[0] if len(array) > 0 else None
+
+    def get_online_list(self):
+        return "ok", list(self.sessions.values())
 
 
 user_manager = UserManagement()
