@@ -121,12 +121,12 @@ class GameManagement(GameObserver):
         game = Viergewinnt()
         self.remove_challenges(user_manager.get_token_by_user(user1))
         self.remove_challenges(user_manager.get_token_by_user(user2))
-        self.player1_sessions[user1] = game
-        self.player2_sessions[user2] = game
         if user1 in self.player2_sessions:
             del self.player2_sessions[user1]
         if user2 in self.player1_sessions:
             del self.player1_sessions[user2]
+        self.player1_sessions[user1] = game
+        self.player2_sessions[user2] = game
         return "ok"
 
     def remove_challenges(self, token):
