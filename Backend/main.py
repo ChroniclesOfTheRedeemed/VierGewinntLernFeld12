@@ -1,9 +1,6 @@
 from src.constants import Api
-from src.flask_app import app
+from src.flask_app import app as application
 
+app = application
 Api.Url.base = ""
-
-if __name__ == '__main__':
-    # run() method of Flask class runs the application
-    # on the local development server.
-    app.run()
+app.route("/")(lambda: "check it out")

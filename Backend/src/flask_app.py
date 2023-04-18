@@ -1,6 +1,6 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, request, jsonify
+from flask import jsonify, Flask, request
 from flask_cors import CORS, cross_origin
 
 from src.V4State import Status4G
@@ -194,7 +194,8 @@ def validate_request(args: list, request_to_validate):
         status = "bad request"
     elif Api.Json.token in args:
         if not user_manager.validate_token(props[args.index(Api.Json.token)]):
-            status = "invalid token"
+            raise Exception(f"JSON: {json}, Props: {props}, Sessions: {user_manager.sessions}")
+            # status = "invalid token"
 
     return status, props
 
