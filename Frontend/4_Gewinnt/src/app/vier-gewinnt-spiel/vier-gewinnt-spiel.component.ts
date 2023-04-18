@@ -10,14 +10,19 @@ export class VierGewinntSpielComponent {
   constructor(private network:NetworkBackendComponent){
 
   }
+  test!:string;
   td!: string;
   Player!: Number;
   Column!: Number;
   Row!: Number;
-button(number:number){
-  this.network.GameMove(number);
+  button(number:number){
+    this.network.GameMove(number);
+    
+    
 
+  }
   
+  fetchGameState(){
 
-}
+  }
 }

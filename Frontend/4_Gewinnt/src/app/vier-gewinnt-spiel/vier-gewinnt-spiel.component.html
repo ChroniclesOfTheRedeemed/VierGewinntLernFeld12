@@ -1,44 +1,20 @@
 <h1>Game</h1>
 <div class="game">
+    <div>
+        <label>Player Turn:</label>
+        <label [textContent]="test" id="Player"></label>
+    </div>
 <li>
     <table style="vertical-align: middle;margin-left: 42%;margin-right: 58%;">
 
         <tr class="table">
-            <td id="Column0_Row0" class="table"></td>
-            <td id="Column1_Row0" class="table"></td>
-            <td id="Column2_Row0" class="table"></td>
-            <td id="Column3_Row0" class="table"></td>
-            <td id="Column4_Row0" class="table"></td>
-            <td id="Column5_Row0" class="table"></td>
-            <td id="Column6_Row0" class="table"></td>
-        </tr>
-        <tr class="table">
-            <td id="Column0_Row1" class="table"></td>
-            <td id="Column1_Row1" class="table"></td>
-            <td id="Column2_Row1" class="table"></td>
-            <td id="Column3_Row1" class="table"></td>
-            <td id="Column4_Row1" class="table"></td>
-            <td id="Column5_Row1" class="table"></td>
-            <td id="Column6_Row1" class="table"></td>
-        </tr>
-        
-        <tr class="table">
-            <td style="background-color: black;" id="Column0_Row2" class="table"></td>
-            <td id="Column1_Row2" class="table"></td>
-            <td id="Column2_Row2" class="table"></td>
-            <td id="Column3_Row2" class="table"></td>
-            <td id="Column4_Row2" class="table"></td>
-            <td id="Column5_Row2" class="table"></td>
-            <td id="Column6_Row2" class="table"></td>
-        </tr>
-        <tr class="table">
-            <td id="Column0_Row3" class="table"></td>
-            <td id="Column1_Row3" class="table"></td>
-            <td id="Column2_Row3" class="table"></td>
-            <td id="Column3_Row3" class="table"></td>
-            <td id="Column4_Row3" class="table"></td>
-            <td id="Column5_Row3" class="table"></td>
-            <td id="Column6_Row3" class="table"></td>
+            <td id="Column0_Row5" class="table"></td>
+            <td id="Column1_Row5" class="table"></td>
+            <td id="Column2_Row5" class="table"></td>
+            <td id="Column3_Row5" class="table"></td>
+            <td id="Column4_Row5" class="table"></td>
+            <td id="Column5_Row5" class="table"></td>
+            <td id="Column6_Row5" class="table"></td>
         </tr>
         <tr class="table">
             <td id="Column0_Row4" class="table"></td>
@@ -49,23 +25,51 @@
             <td id="Column5_Row4" class="table"></td>
             <td id="Column6_Row4" class="table"></td>
         </tr>
+        
         <tr class="table">
-            <td id="Column0_Row5" class="table"></td>
-            <td id="Column1_Row5" class="table"></td>
-            <td id="Column2_Row5" class="table"></td>
-            <td id="Column3_Row5" class="table"></td>
-            <td id="Column4_Row5" class="table"></td>
-            <td id="Column5_Row5" class="table"></td>
-            <td id="Column6_Row5" class="table"></td>
+            <td id="Column0_Row3" class="table"></td>
+            <td id="Column1_Row3" class="table"></td>
+            <td id="Column2_Row3" class="table"></td>
+            <td id="Column3_Row3" class="table"></td>
+            <td id="Column4_Row3" class="table"></td>
+            <td id="Column5_Row3" class="table"></td>
+            <td id="Column6_Row3" class="table"></td>
+        </tr>
+        <tr class="table">
+            <td id="Column0_Row2" class="table"></td>
+            <td id="Column1_Row2" class="table"></td>
+            <td id="Column2_Row2" class="table"></td>
+            <td id="Column3_Row2" class="table"></td>
+            <td id="Column4_Row2" class="table"></td>
+            <td id="Column5_Row2" class="table"></td>
+            <td id="Column6_Row2" class="table"></td>
+        </tr>
+        <tr class="table">
+            <td id="Column0_Row1" class="table"></td>
+            <td id="Column1_Row1" class="table"></td>
+            <td id="Column2_Row1" class="table"></td>
+            <td id="Column3_Row1" class="table"></td>
+            <td id="Column4_Row1" class="table"></td>
+            <td id="Column5_Row1" class="table"></td>
+            <td id="Column6_Row1" class="table"></td>
+        </tr>
+        <tr class="table">
+            <td id="Column0_Row0" class="table"></td>
+            <td id="Column1_Row0" class="table"></td>
+            <td id="Column2_Row0" class="table"></td>
+            <td id="Column3_Row0" class="table"></td>
+            <td id="Column4_Row0" class="table"></td>
+            <td id="Column5_Row0" class="table"></td>
+            <td id="Column6_Row0" class="table"></td>
         </tr>
         <tr class="lastTablerow">
-            <td><div style=" height: 100%;"><button id="button1" (click)="button(1)" style=" height: 100%;">1</button></div></td>
-            <td><button id="button1" (click)="button(2)">2</button></td>
-            <td><button id="button2" (click)="button(3)">3</button></td>
-            <td><button id="button3" (click)="button(4)">4</button></td>
-            <td><button id="button4" (click)="button(5)">5</button></td>
-            <td><button id="button5" (click)="button(6)">6</button></td>
-            <td><button id="button6" (click)="button(7)">7</button></td>
+            <td><div style=" height: 100%;"><button id="button1" (click)="button(0)" style=" height: 100%;">0</button></div></td>
+            <td><button id="button1" (click)="button(1)">1</button></td>
+            <td><button id="button2" (click)="button(2)">2</button></td>
+            <td><button id="button3" (click)="button(3)">3</button></td>
+            <td><button id="button4" (click)="button(4)">4</button></td>
+            <td><button id="button5" (click)="button(5)">5</button></td>
+            <td><button id="button6" (click)="button(6)">6</button></td>
         </tr>
     </table>
 </li>

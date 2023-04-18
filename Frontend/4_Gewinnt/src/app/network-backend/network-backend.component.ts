@@ -17,11 +17,14 @@ export class NetworkBackendComponent {
   corsHeaders: HttpHeaders = new HttpHeaders;
   root!: string;
   testjson!: JSON;
+  player1!:String;
+  player2!:String;
   Token!: String;
+  GameState!:String;
   Response!: String;
   GameColumn0!:Number[];
   constructor(private http: HttpClient,public router:Router, private routing:RoutingComponent) { }
-  configUrl = 'http://127.0.0.1:5000/login';
+  configUrl = 'http://mikepython256.pythonanywhere.com/login';
 
    Autherisation(User:String,psw:String) {
     const User1=JSON.parse('{ "username": "'+User+'", "password":"'+psw+'" }');
@@ -29,7 +32,7 @@ export class NetworkBackendComponent {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:5000/login'
+      'Access-Control-Allow-Origin': 'http://mikepython256.pythonanywhere.com/login'
     });
     let options = { headers: headers };
     
@@ -50,17 +53,19 @@ export class NetworkBackendComponent {
           
         }
         if(this.Token!=="0" && this.Response==="ok"){
+          this.player1 = User;
+          this.GetOnline();
           this.routing.routetoMain();
         }
 
       })
   }
   logOut(){
-    this.configUrl = 'http://127.0.0.1:5000/logout';
+    this.configUrl = 'http://mikepython256.pythonanywhere.com/logout';
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:5000/login'
+      'Access-Control-Allow-Origin': 'http://mikepython256.pythonanywhere.com/login'
     });
     let options = { headers: headers };
     const User1=JSON.parse('{ "token": "'+this.Token+'" }');
@@ -78,13 +83,54 @@ export class NetworkBackendComponent {
       console.log(this.Token+":Token")
     })
   }
-  GameMove(ColumnNumber:Number){
-    this.configUrl = 'http://127.0.0.1:5000/move';
+  fetchPlayerturn(){
+    this.configUrl = 'http://mikepython256.pythonanywhere.com/state';
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:5000/login'
+      'Access-Control-Allow-Origin': 'http://mikepython256.pythonanywhere.com/state'
+    });
+    let options = { headers: headers };
+    const User1=JSON.parse('{ "token": "'+this.Token+'" }');
+    console.log(JSON.parse('{ "token": "'+this.Token+'" }'))
+    this.http.post<JSON>(this.configUrl,User1,options).subscribe(data=>{
+      let jsonObj = JSON.parse(JSON.stringify(data))
+      var Player = document.getElementById("Player") as HTMLLabelElement;
+      if(jsonObj.player1turn==true){
+        return this.player1;
+      }else{
+        return this.player2;
+      }
+      
+    })
+  }
+  fetchGameState():boolean{
+    this.configUrl = 'http://mikepython256.pythonanywhere.com/state';
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': 'http://mikepython256.pythonanywhere.com/state'
+    });
+    let options = { headers: headers };
+    const User1=JSON.parse('{ "token": "'+this.Token+'" }');
+    console.log(JSON.parse('{ "token": "'+this.Token+'" }'))
+    this.http.post<JSON>(this.configUrl,User1,options).subscribe(data=>{
+      let jsonObj = JSON.parse(JSON.stringify(data))
+      var Player = document.getElementById("Player") as HTMLLabelElement;
+      this.GameState = jsonObj.game_state;
+      
+    })
+    return false;
+  }
+  GameMove(ColumnNumber:Number){
+    this.configUrl = 'hhttp://mikepython256.pythonanywhere.com/move';
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': 'http://mikepython256.pythonanywhere.com/move'
     });
     let options = { headers: headers };
     const User1=JSON.parse('{ "token": "'+this.Token+'", "coloumnNumber":'+ColumnNumber+' }');
@@ -143,7 +189,7 @@ export class NetworkBackendComponent {
       console.log(jsonObj.game_field.coloumn_6[i]+"column7"+i)
 
     }
-return null;
+      return null;
     })
   }
   td!: string;
@@ -169,12 +215,14 @@ return null;
         this.Row=i;
       }
     }
-    this.td="Column" +this.Column+"_Row"+this.Row;
+    this.td='Column' +this.Column+'_Row'+this.Row;
 
     console.log(this.td)
  
     const page = window.open('vier-gewinnt-spiel.component.html')
-    this.shand=page?.document.getElementById(this.td);
+    console.log(this.td)
+    this.shand=document.getElementById(this.td);
+    console.log(this.shand)
     if (this.Player===1) {
       this.shand.style.backgroundColor= "blue";
     }else if (this.Player===2){
@@ -182,36 +230,76 @@ return null;
     }
   
   }
-  RequestGame(match_type:String){
-    this.configUrl = 'http://127.0.0.1:5000/request_game';
+  GetOnline(){
+    this.configUrl = 'http://mikepython256.pythonanywhere.com/fetch_online_users';
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:5000/login'
+      'Access-Control-Allow-Origin': 'http://mikepython256.pythonanywhere.com/login'
+    });
+    
+    let options = { headers: headers };
+    const User1=JSON.parse('{ "token": "'+this.Token+'" }');
+    console.log(User1)
+
+    this.http.post<JSON>(this.configUrl,User1,options).subscribe(data=>{
+      let list = data;
+      let jsonObj=JSON.parse(JSON.stringify(data));
+      let list1= jsonObj.online_player_list as string[]
+      var selector = document.getElementById("OnlinePlayer") as HTMLSelectElement;
+      for(let i = 0; i<list1.length;i++){
+        console.log(list1[i])
+        selector.options[i] = new Option(list1[i],list1[i]);
+        
+      }
+      
+
+      
+    
+    
+    })
+
+
+    
+  }
+  async getgamestateasync(){
+    let gamestatebool=false;
+
+    while(gamestatebool===false){
+      gamestatebool  =  this.fetchGameState();
+      console.log(this.GameState)
+      console.log(this.GameState==="ongoing")
+      if(this.GameState==="ongoing"){this.router.navigate(['/vier-gewinnt-spiel']);break}
+
+        await new Promise(resolve=> setTimeout(resolve, 1000));
+    }
+    
+  }
+  RequestGame(username:String){
+    this.configUrl = 'hhttp://mikepython256.pythonanywhere.com/request_game';
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': 'http://mikepython256.pythonanywhere.com/request_game'
     });
     let options = { headers: headers };
-    const User1=JSON.parse('{ "token": "'+this.Token+'", "match_type":"'+match_type+'" }');
-    console.log(JSON.parse('{ "token": "'+this.Token+'", "match_type":"'+match_type+'" }'))
+    const User1=JSON.parse('{ "token": "'+this.Token+'", "username":"'+username+'" }');
+    this.player2=username;
+    console.log(JSON.parse('{ "token": "'+this.Token+'", "username":"'+username+'" }'))
     this.http.post<JSON>(this.configUrl,User1,options).subscribe(data=>{
       let jsonObj = JSON.parse(JSON.stringify(data))
-    console.log(jsonObj.game_field.coloumn_0[1]+"column1")
-      for(let i = 0; i < 6; i++){
-        console.log(jsonObj.game_field.coloumn_0[i]+"column1"+i)
-        console.log(jsonObj.game_field.coloumn_1[i]+"column2"+i)
-        console.log(jsonObj.game_field.coloumn_2[i]+"column3"+i)
-        console.log(jsonObj.game_field.coloumn_3[i]+"column4"+i)
-        console.log(jsonObj.game_field.coloumn_4[i]+"column5"+i)
-        console.log(jsonObj.game_field.coloumn_5[i]+"column6"+i)
-        console.log(jsonObj.game_field.coloumn_6[i]+"column7"+i)
-
+      console.log(jsonObj)
+      if(jsonObj.status == "ok"){
+        this.getgamestateasync();
+        
       }
-   
-
     })
+
+
   }
   CreateUser(User:String,psw:String){
     const User1=JSON.parse('{ "username": "'+User+'", "password":"'+psw+'" }');
-    this.configUrl = 'http://127.0.0.1:5000/create_user';
+    this.configUrl = 'http://mikepython256.pythonanywhere.com/create_user';
     this.http.post<JSON>(this.configUrl,User1).subscribe(data=>{
       console.log(""+JSON.stringify(data) )
       let jsonObj = JSON.parse(JSON.stringify(data))

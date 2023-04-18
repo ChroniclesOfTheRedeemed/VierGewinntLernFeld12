@@ -15,14 +15,22 @@ const appRoutes:Routes=[
 export class MainPageComponent {
   title = "vier Gewinnt Main Page"
   constructor(private router:Router, public network:NetworkBackendComponent){
+    
+  }
+  
+  ngOninit(){
+
 
   }
 
   logOut(){
     this.network.logOut();
   }
-  onSelect(): void {
-    this.network.RequestGame("solo");
-    this.router.navigate(['/vier-gewinnt-spiel']);
+
+  onSelect() {
+    var a = document.getElementById('OnlinePlayer')as HTMLSelectElement;
+    
+    this.network.RequestGame(a.value);
+
   }
 }
