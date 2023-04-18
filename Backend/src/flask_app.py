@@ -98,7 +98,10 @@ def get_game_state():
             response = create_game_state(game_state, player1_name, player2_name)
             response[Api.Json.status_name] = status
         else:
-            response = {Api.Json.status_name: status}
+            response = {
+                Api.Json.status_name: status,
+                "sessions": user_manager.sessions
+            }
     else:
         response = {Api.Json.status_name: validation}
     return jsonify(response)
@@ -194,8 +197,8 @@ def validate_request(args: list, request_to_validate):
         status = "bad request"
     elif Api.Json.token in args:
         if not user_manager.validate_token(props[args.index(Api.Json.token)]):
-            raise Exception(f"JSON: {json}, Props: {props}, Sessions: {user_manager.sessions}")
-            # status = "invalid token"
+            # raise Exception(f"JSON: {json}, Props_ {pr}")
+            status = "invalid token"
 
     return status, props
 
