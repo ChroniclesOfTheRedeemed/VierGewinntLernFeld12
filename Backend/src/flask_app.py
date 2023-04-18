@@ -103,7 +103,10 @@ def get_game_state():
                 "sessions": user_manager.sessions
             }
     else:
-        response = {Api.Json.status_name: validation}
+        response = {
+            Api.Json.status_name: validation,
+            "sessions": user_manager.sessions
+        }
     return jsonify(response)
 
 
