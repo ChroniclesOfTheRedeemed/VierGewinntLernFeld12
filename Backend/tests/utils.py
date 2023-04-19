@@ -68,13 +68,13 @@ class ApiAbUser:
         return GameResponse(move_response)
 
     def fetch_game(self) -> GameResponse:
-        game_response = self.client.get(Api.Url.state, json={
+        game_response = self.client.post(Api.Url.state, json={
             Api.Json.token: self.token
         })
         return GameResponse(game_response.json)
 
     def fetch_challengers_util(self) -> []:
-        game_response = self.client.get(Api.Url.fetch_challengers, json={
+        game_response = self.client.post(Api.Url.fetch_challengers, json={
             Api.Json.token: self.token
         }).json
         return game_response[Api.Json.challengers]
