@@ -23,28 +23,23 @@ class GameManagement(GameObserver):
     # challenges data format:
     # challenges = {
     #   token1:[challenger_username1, challenger2_username1]
+
     def __init__(self):
         self.player1_sessions = {}
         self.player2_sessions = {}
         self.challenges = {}
 
-    # check opponent is online
-    #   check opponent is not in game
-    #       check if I have been challenged by opponent already
-    #           -> start game
-    #       if not
-    #           add challenges on enemy
-    def challenge(self, token, opponent):
-        opponent_token = user_manager.get_token_by_user(opponent)
+    def challenge(self, token, opponent_name):
         status = "ok"
+        opponent_token = user_manager.get_token_by_user(opponent_name)
         challenger = user_manager.sessions[token]
         if opponent_token:
             game = self.check_ongoing_game(opponent_token)
             if game:
                 status = "Opponent is busy"
             else:
-                if self.is_challenged(token, opponent):
-                    self.start_game(challenger, opponent)
+                if self.is_challenged(token, opponent_name):
+                    self.start_game(challenger, opponent_name)
                     pass
                 else:
                     if opponent_token in self.challenges:
@@ -53,8 +48,6 @@ class GameManagement(GameObserver):
                         self.challenges[opponent_token] = [challenger]
         else:
             status = "Opponent is not available."
-        # check opponent available
-        # add to self challenges
         return status
 
     def is_challenged(self, token, by_user):

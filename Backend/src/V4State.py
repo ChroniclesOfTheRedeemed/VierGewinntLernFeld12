@@ -7,7 +7,7 @@ ongoing = "ongoing"
 class Status4G:
 
     def __init__(self):
-        self.SpielFeld = []
+        self.spiel_field = []
         self.player1turn = True
         self.result = ongoing
         self.last_move = (-1, -1)

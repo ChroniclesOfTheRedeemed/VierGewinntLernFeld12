@@ -27,9 +27,6 @@ class UserManagement:
                 self.logout(previous_token)
                 # datetime object containing current date and time
             now = datetime.now()
-
-            print("now =", now)
-
             # dd/mm/YY H:M:S
             dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
             new_token = dt_string + " " + str(self.generate_random_token())
@@ -39,19 +36,18 @@ class UserManagement:
             return "invalid", "0"
 
     def logout(self, token):
-        print(self.sessions)
         del self.sessions[token]
         return Api.Json.ok
-
-    def get_user_profile(self, username):
-        user = self.db.load_user(username)
-        return user.profile
 
     def add_user(self, username, password):
         if self.db.load_user(username):
             return "user already exists", "0"
         self.db.create_user(username, self.hash_password(password))
         return self.login(username, password)
+
+    def get_user_profile(self, username):
+        user = self.db.load_user(username)
+        return user.profile
 
     def hash_password(self, password: str):
         return bcrypt.hashpw(password.encode('utf-8'), b'$2b$12$X50ynTmqfshhtC59ZFpcv.')

@@ -179,7 +179,7 @@ def forfeit():
 def create_game_state(game_state: Status4G, player1_name, player2_name):
     return {
         Api.Json.player1turn: game_state.player1turn,
-        Api.Json.game_field: create_game_field_response(game_state.SpielFeld),
+        Api.Json.game_field: create_game_field_response(game_state.spiel_field),
         Api.Json.game_finish: game_state.result,
         Api.Json.player1: player1_name,
         Api.Json.player2: player2_name,
