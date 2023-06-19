@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from src.ViergewinntManager import game_manager
-from src.user_management import user_manager
+from src.game.ViergewinntManager import game_manager
+from src.game.user_management import user_manager
 
 
 class TestGameManagement(TestCase):

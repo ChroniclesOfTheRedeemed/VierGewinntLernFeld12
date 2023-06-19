@@ -11,8 +11,8 @@ class Storer:
     def create_if_not_exist(file_name, dict):
         file_path = "jsons/" + str(file_name) + ".json"
         if not Path(file_path).is_file():
-            if not os.path.exists('../jsons'):
-                os.makedirs('../jsons')
+            if not os.path.exists('../../jsons'):
+                os.makedirs('../../jsons')
             open(file_path, "x")
             with open(file_path, "w") as outfile:
                 outfile.write(json.dumps(dict, indent=4))
@@ -38,8 +38,8 @@ class Storer:
             with open(file_path, "w") as outfile:
                 outfile.write(json.dumps(dict, indent=4))
         else:
-            if not os.path.exists('../jsons'):
-                os.makedirs('../jsons')
+            if not os.path.exists('../../jsons'):
+                os.makedirs('../../jsons')
             open(file_path, "x")
             with open(file_path, "w") as outfile:
                 outfile.write(json.dumps(dict, indent=4))

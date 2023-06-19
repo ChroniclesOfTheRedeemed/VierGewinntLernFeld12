@@ -3,10 +3,10 @@
 from flask import jsonify, Flask, request
 from flask_cors import CORS, cross_origin
 
-from src.V4State import Status4G
-from src.ViergewinntManager import game_manager
-from src.constants import Api
-from src.user_management import user_manager
+from src.game.V4State import Status4G
+from src.game.ViergewinntManager import game_manager
+from src.game.constants import Api
+from src.game.user_management import user_manager
 
 app = Flask(__name__)
 CORS(app)

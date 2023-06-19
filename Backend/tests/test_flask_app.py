@@ -1,12 +1,8 @@
 from unittest import TestCase
 
-from unittest import TestCase
-
-from flask.testing import FlaskClient
-
-from src import V4State
-from src.constants import Api
-from src.flask_app import find_properties_in_answer, app
+from src.game import V4State
+from src.game.constants import Api
+from src.game.flask_app import find_properties_in_answer, app
 from tests import utils
 from tests.utils import ApiAbUser
 

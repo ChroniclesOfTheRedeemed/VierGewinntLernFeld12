@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from src import V4State
-from src.V4State import GameEndedException
-from src.vergewinntspiel import Viergewinnt
+from src.game import V4State
+from src.game.V4State import GameEndedException
+from src.game.vergewinntspiel import Viergewinnt
 from tests import utils
 from tests.utils import normal_wins, json_message
 

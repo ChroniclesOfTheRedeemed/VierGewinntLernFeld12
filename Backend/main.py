@@ -1,5 +1,5 @@
-from src.constants import Api
-from src.flask_app import app as application
+from src.game.constants import Api
+from src.game.flask_app import app as application
 
 app = application
 Api.Url.base = ""

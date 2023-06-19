@@ -1,4 +1,4 @@
-from src.json_storer import Storer
+from src.game.json_storer import Storer
 
 user_file = "users"
 

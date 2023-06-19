@@ -1,7 +1,7 @@
 from flask.testing import FlaskClient
 
-from src import V4State
-from src.constants import Api
+from src.game import V4State
+from src.game.constants import Api
 
 expected_result = "game result"
 moves_player1 = "m1"

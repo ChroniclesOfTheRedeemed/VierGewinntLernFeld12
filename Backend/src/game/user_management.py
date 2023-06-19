@@ -1,10 +1,10 @@
 import random
-from datetime import date, datetime
+from datetime import datetime
 
 import bcrypt
 
-from src.constants import Api
-from src.persistenceapi import Persistence
+from src.game.constants import Api
+from src.game.persistenceapi import Persistence
 
 
 # Declaring our password

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.user_management import UserManagement
+from src.game.user_management import UserManagement
 
 
 class TestUserManagement(TestCase):
