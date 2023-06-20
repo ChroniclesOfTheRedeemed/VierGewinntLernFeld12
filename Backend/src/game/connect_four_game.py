@@ -1,7 +1,7 @@
 import copy
 
-from src.game import V4State
-from src.game.V4State import BadMoveException, Status4G
+from src.game import connect_four_state
+from src.game.connect_four_state import BadMoveException, Status4G
 
 
 class Viergewinnt:

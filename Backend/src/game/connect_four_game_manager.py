@@ -1,6 +1,6 @@
-from src.game import V4State
+from src.game import connect_four_state
 from src.game.user_management import user_manager
-from src.game.vergewinntspiel import Viergewinnt
+from src.game.connect_four_game import Viergewinnt
 
 
 # Declaring our password

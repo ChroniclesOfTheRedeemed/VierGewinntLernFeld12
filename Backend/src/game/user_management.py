@@ -4,7 +4,7 @@ from datetime import datetime
 import bcrypt
 
 from src.game.constants import Api
-from src.game.persistenceapi import Persistence
+from src.game.persistence_api import Persistence
 
 
 # Declaring our password

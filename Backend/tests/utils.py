@@ -1,6 +1,6 @@
 from flask.testing import FlaskClient
 
-from src.game import V4State
+from src.game import connect_four_state
 from src.game.constants import Api
 
 expected_result = "game result"

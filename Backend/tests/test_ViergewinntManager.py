@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.game.ViergewinntManager import game_manager
+from src.game.connect_four_game_manager import game_manager
 from src.game.user_management import user_manager
 
 

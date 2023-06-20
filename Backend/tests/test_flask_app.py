@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.game import V4State
+from src.game import connect_four_state
 from src.game.constants import Api
 from src.game.flask_app import find_properties_in_answer, app
 from tests import utils

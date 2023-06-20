@@ -3,8 +3,8 @@
 from flask import jsonify, Flask, request
 from flask_cors import CORS, cross_origin
 
-from src.game.V4State import Status4G
-from src.game.ViergewinntManager import game_manager
+from src.game.connect_four_state import Status4G
+from src.game.connect_four_game_manager import game_manager
 from src.game.constants import Api
 from src.game.user_management import user_manager
 
