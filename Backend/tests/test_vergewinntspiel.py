@@ -18,7 +18,7 @@ class TestViergewinnt(TestCase):
         self.game = Viergewinnt()
 
     def game_ended(self, game):
-        if game.State.result == V4State.ongoing:
+        if game.State.result == connect_four_state.ongoing:
             return False
         try:
             game.playerMadeMove(3)

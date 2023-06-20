@@ -29,13 +29,13 @@ class Viergewinnt:
         return new_state
 
     def playerMadeMove(self, move):
-        if self.State.result == V4State.ongoing:
+        if self.State.result == connect_four_state.ongoing:
             self.checkMove(move)
             level_of_move = self.updateSpielFeld(move)
             self.updateGameStatus(move=move, level_of_move=level_of_move)
             return level_of_move
         else:
-            raise V4State.GameEndedException()
+            raise connect_four_state.GameEndedException()
 
     def checkMove(self, move):
         if 0 <= move < self.breite:
@@ -142,7 +142,7 @@ class Viergewinnt:
             if not self.gameDraw():
                 return
         # self.game_observer.gameOver(won, self.id)
-        self.State.result = V4State.player1wins if won else V4State.player2wins
+        self.State.result = connect_four_state.player1wins if won else connect_four_state.player2wins
         # self.__init__(self.game_observer)
 
     def inBoundaries(self, coloumn, row):

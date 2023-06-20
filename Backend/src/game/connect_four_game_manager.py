@@ -64,9 +64,9 @@ class GameManagement(GameObserver):
         user = user_manager.sessions[token]
         if game:
             if user in self.player1_sessions:
-                game.State.result = V4State.player2wins
+                game.State.result = connect_four_state.player2wins
             if user in self.player2_sessions:
-                game.State.result = V4State.player1wins
+                game.State.result = connect_four_state.player1wins
             return "ok"
         else:
             return "no ongoing game found"
@@ -80,9 +80,9 @@ class GameManagement(GameObserver):
             game = self.player2_sessions[user]
         else:
             return None
-        if game.State.result != V4State.player1wins \
-                and game.State.result != V4State.player2wins \
-                and game.State.result != V4State.draw:
+        if game.State.result != connect_four_state.player1wins \
+                and game.State.result != connect_four_state.player2wins \
+                and game.State.result != connect_four_state.draw:
             return game
 
     def fetch_state(self, token):
@@ -137,9 +137,9 @@ class GameManagement(GameObserver):
                     status = "ok"
                     game.playerMadeMove(move)
                     player1_moved = True
-                except V4State.BadMoveException:
+                except connect_four_state.BadMoveException:
                     status = "bad move"
-                except V4State.GameEndedException:
+                except connect_four_state.GameEndedException:
                     status = "game has concluded already"
         if user_name in self.player2_sessions and not player1_moved:
             game = self.player2_sessions[user_name]
@@ -147,9 +147,9 @@ class GameManagement(GameObserver):
                 try:
                     status = "ok"
                     game.playerMadeMove(move)
-                except V4State.BadMoveException:
+                except connect_four_state.BadMoveException:
                     status = "bad move"
-                except V4State.GameEndedException:
+                except connect_four_state.GameEndedException:
                     status = "game has concluded already"
         if not game:
             status = "there is no game going on"

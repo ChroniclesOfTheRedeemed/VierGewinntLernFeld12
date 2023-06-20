@@ -31,7 +31,7 @@ class TestIntegrations(TestCase):
     def test_game_forfeit(self):
         self.start_game_test(self.player1, self.player2)
         # two players play set of moves
-        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.ongoing_game_1)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.GamesAndExpectations.ongoing_game_1)
         self.forfeit_the_game_test(self.player1, self.player2, True)
         self.make_sure_game_ended([self.player1, self.player2])
 
@@ -39,7 +39,7 @@ class TestIntegrations(TestCase):
 
     def test_duel_integration_test(self):
         self.start_game_test(self.player1, self.player2)
-        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.player2_vertical_win)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.GamesAndExpectations.player2_vertical_win)
         self.make_sure_game_ended([self.player1, self.player2])
 
     # theoretically I only need loser
@@ -48,16 +48,16 @@ class TestIntegrations(TestCase):
     # choose this because I don't care, it's fine for now
     def forfeit_the_game_test(self, loser: ApiAbUser, winner: ApiAbUser, loser_is_player1):
         # basic forfeit logic
-        self.assertEqual(loser.fetch_game().game_status, V4State.ongoing)
+        self.assertEqual(loser.fetch_game().game_status, connect_four_state.ongoing)
         response = loser.forfeit_util()
-        result_after_ff = V4State.player1wins if loser_is_player1 else V4State.player2wins
+        result_after_ff = connect_four_state.player1wins if loser_is_player1 else connect_four_state.player2wins
         self.assertEqual(response, Api.Json.ok)
         self.assertEqual(loser.fetch_game().game_status, result_after_ff)
 
     def make_sure_game_ended(self, players: [ApiAbUser]):
         for player in players:
             game_result = player.fetch_game().game_status
-            self.assertNotEqual(game_result, V4State.ongoing)
+            self.assertNotEqual(game_result, connect_four_state.ongoing)
             self.assertNotEqual(player.move(8), "ok")
             response = player.forfeit_util()
             self.assertNotEqual(player.move(1), "ok")
@@ -131,12 +131,12 @@ class TestIntegrations(TestCase):
         self.logout_test(self.player1)
         self.login_test(self.player1)
         self.start_game_test(self.player1, self.player2)
-        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.player2_vertical_win)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.GamesAndExpectations.player2_vertical_win)
         self.make_sure_game_ended([self.player1, self.player2])
 
         self.start_game_test(self.player2, self.player1)
         self.play_a_set_of_moves_test(self.player1, self.player2,
-                                      utils.games_and_expectations.first_half_vertical_win_player_1)
+                                      utils.GamesAndExpectations.first_half_vertical_win_player_1)
 
         self.logout_test(self.player1)
         self.logout_test(self.player2)
@@ -144,7 +144,7 @@ class TestIntegrations(TestCase):
         self.login_test(self.player2)
 
         self.play_a_set_of_moves_test(self.player1, self.player2,
-                                      utils.games_and_expectations.second_half_vertical_win_player_1)
+                                      utils.GamesAndExpectations.second_half_vertical_win_player_1)
         self.make_sure_game_ended([self.player1, self.player2])
 
         self.logout_test(self.player1)
@@ -153,7 +153,7 @@ class TestIntegrations(TestCase):
         self.start_game_test(self.player2, self.player1)
 
         self.play_a_set_of_moves_test(self.player1, self.player2,
-                                      utils.games_and_expectations.first_half_vertical_win_player_1)
+                                      utils.GamesAndExpectations.first_half_vertical_win_player_1)
 
         self.logout_test(self.player1)
         self.forfeit_the_game_test(self.player2, self.player1, True)
@@ -161,7 +161,7 @@ class TestIntegrations(TestCase):
         self.make_sure_game_ended([self.player1, self.player2])
 
         self.start_game_test(self.player1, self.player2)
-        self.play_a_set_of_moves_test(self.player2, self.player1, utils.games_and_expectations.player2_vertical_win)
+        self.play_a_set_of_moves_test(self.player2, self.player1, utils.GamesAndExpectations.player2_vertical_win)
         self.make_sure_game_ended([self.player1, self.player2])
     # idea is to check if states and datatypes properly support multiple games without application restart
 
