@@ -28,5 +28,29 @@
         "profile": {
             "wins": 0
         }
+    },
+    "discord.user1": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.upRoaL52tUywE9OFDItoUvaX1Cu1agy'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "discord.111": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.RCMEfLkE8VPANnkPqz2H28gfPUbiD7G'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "discord.555": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.TSg37ED3qr7zqU1m/Jvq/.t9kOM51SC'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "discord.5555": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.eKbg4jsk9tHRMpyIRHdI4VxGabtVvLO'",
+        "profile": {
+            "wins": 0
+        }
     }
 }
