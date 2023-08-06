@@ -1,7 +1,7 @@
 # Connect Four Server
 
-Created: /n 16.07.23
-Last Updated:
+Created: /n 16.07.23  
+Last Updated: 06.08.23
 
 ### Goal
 
@@ -43,3 +43,27 @@ There are no tests (jkjk)
 ```
 
 ```
+
+### First time Setup Assistance of machines for general usage
+
+Connecting to a machine via ssh
+ - have a valid username and password for the machine
+ - enable ssh on said machine
+ - find out local ip with e.g. `ifconfig`
+ - connect remotely with `ssh username@ip`  
+   - e.g. `ssh raspberry@192.168.1.45`
+
+Use screen
+ - `sudo apt install screen`
+ - `screen -v`
+ - `screen -ls`
+ - `screen -S new-screen`
+ - deattach: CRTL-a d 
+ - reattach: `screen -r screen-id`
+
+For ChroniclesOfTheRedeemed Projects:
+
+ - use `git config --global credential.helper store` to store credentials in next push request
+   - a new access token get be taken from here https://github.com/settings/tokens
+ - you need to use http request to clone, or set up ssh keys and connect it with github
+   - there are no ssh keys setup in GitHub yet
