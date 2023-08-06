@@ -20,8 +20,12 @@ This includes but not limits to client applications in form of UIs or automated 
 ### How to run the application
 
 Setup (TODO when setting up project on new machine)
-install python version ???  
+install python version ???  (dunno)
 --> link setup page  
+
+ - `pip install flask-cors`
+ - pip install bcrypt
+ - 
 install Bcrypt
 install flask
 
