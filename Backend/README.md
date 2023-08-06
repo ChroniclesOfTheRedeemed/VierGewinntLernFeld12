@@ -44,9 +44,20 @@ There are no tests (jkjk)
 
 #### how to execute all tests
 
-```
+`python3.8 -m unittest discover tests`
+
+
+### Known Issues
 
 ```
+Traceback (most recent call last):
+  File "main.py", line 1, in <module>
+    from src.constants import Api
+ImportError: No module named src.constants
+```
+There is no solution for this issue yet  
+Last time setup was done on a fresh Pi the preinstalled Python command worked  
+It is likely a path issue when the python has been messed with a lot
 
 ### First time Setup Assistance of machines for general usage
 
