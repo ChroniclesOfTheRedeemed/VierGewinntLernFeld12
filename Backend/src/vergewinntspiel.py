@@ -20,26 +20,26 @@ class Viergewinnt:
         self.FirstMove = -1
         self.movesDone = 0
         self.State = Status4G()
-        self.State.SpielFeld = [[self.feldleer for _ in range(0, self.hoehe)] for _ in range(0, self.breite)]
+        self.State.spiel_field = [[self.feldleer for _ in range(0, self.hoehe)] for _ in range(0, self.breite)]
 
     def getGameState(self):
-        newState = Status4G()
-        newState.SpielFeld = copy.deepcopy(self.State.SpielFeld)
-        newState.player1turn = self.State.player1turn
-        return newState
+        new_state = Status4G()
+        new_state.spiel_field = copy.deepcopy(self.State.spiel_field)
+        new_state.player1turn = self.State.player1turn
+        return new_state
 
     def playerMadeMove(self, move):
         if self.State.result == V4State.ongoing:
             self.checkMove(move)
-            levelOfMove = self.updateSpielFeld(move)
-            self.updateGameStatus(move=move, level_of_move=levelOfMove)
-            return levelOfMove
+            level_of_move = self.updateSpielFeld(move)
+            self.updateGameStatus(move=move, level_of_move=level_of_move)
+            return level_of_move
         else:
             raise V4State.GameEndedException()
 
     def checkMove(self, move):
         if 0 <= move < self.breite:
-            if self.State.SpielFeld[move][self.hoehe - 1] is not self.feldleer:
+            if self.State.spiel_field[move][self.hoehe - 1] is not self.feldleer:
                 raise BadMoveException()
         else:
             raise BadMoveException()
@@ -58,7 +58,7 @@ class Viergewinnt:
         print("level = " + str(level))
         for row in range(level - 1, -1, -1):
             print("row = " + str(row))
-            if self.State.SpielFeld[move][row] is mark:
+            if self.State.spiel_field[move][row] is mark:
                 print(str(connect) + " for the gutter")
                 connect += 1
             else:
@@ -78,7 +78,7 @@ class Viergewinnt:
 
             for i in range(0, self.four - 1):
                 if self.inBoundaries(coloumn=coordinateC, row=coordinateR) \
-                        and self.State.SpielFeld[coordinateC][coordinateR] is mark:
+                        and self.State.spiel_field[coordinateC][coordinateR] is mark:
                     connect += 1
                     coordinateC += increaseC
                     coordinateR += increaseR
@@ -94,7 +94,7 @@ class Viergewinnt:
             coordinateR = level + increaseR
             for i in range(0, self.four - 1):
                 if self.inBoundaries(coloumn=coordinateC, row=coordinateR) \
-                        and self.State.SpielFeld[coordinateC][coordinateR] is mark:
+                        and self.State.spiel_field[coordinateC][coordinateR] is mark:
                     connect += 1
                     coordinateC += increaseC
                     coordinateR += increaseR
@@ -112,10 +112,10 @@ class Viergewinnt:
     def getMarkOfLastMove(self, move):
         mark = 0
         for row in range(0, self.hoehe):
-            if self.State.SpielFeld[move][row] is self.feldleer:
+            if self.State.spiel_field[move][row] is self.feldleer:
                 break
             else:
-                mark = self.State.SpielFeld[move][row]
+                mark = self.State.spiel_field[move][row]
         return mark
 
     def updateSpielFeld(self, checked_move):
@@ -126,8 +126,8 @@ class Viergewinnt:
 
         level = 0
         for level in range(0, self.hoehe):
-            if self.State.SpielFeld[checked_move][level] is self.feldleer:
-                self.State.SpielFeld[checked_move][level] = mark
+            if self.State.spiel_field[checked_move][level] is self.feldleer:
+                self.State.spiel_field[checked_move][level] = mark
                 self.State.last_move = (checked_move, level)
                 break
         self.movesDone += 1
