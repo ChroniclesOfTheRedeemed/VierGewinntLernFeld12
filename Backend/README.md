@@ -49,6 +49,8 @@ There are no tests (jkjk)
 
 ### Known Issues
 
+gameResult always returns player1 wins, this bug majestically evaded tests SOMEHOW
+
 ```
 Traceback (most recent call last):
   File "main.py", line 1, in <module>
