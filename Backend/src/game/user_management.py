@@ -26,10 +26,7 @@ class UserManagement:
             if previous_token:
                 self.logout(previous_token)
                 # datetime object containing current date and time
-            now = datetime.now()
-            # dd/mm/YY H:M:S
-            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-            new_token = dt_string + " " + str(self.generate_random_token())
+            new_token = str(self.generate_random_token())
             self.sessions[new_token] = username
             return status, new_token
         else:

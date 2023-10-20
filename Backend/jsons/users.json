@@ -52,5 +52,119 @@
         "profile": {
             "wins": 0
         }
+    },
+    "admin2": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.7fJcq9JYmTIK0yTbekxXRgvzNvAXeNW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "admin3": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.7fJcq9JYmTIK0yTbekxXRgvzNvAXeNW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "admin4": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.7fJcq9JYmTIK0yTbekxXRgvzNvAXeNW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "admin5": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.7fJcq9JYmTIK0yTbekxXRgvzNvAXeNW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Immanuel": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv..vf3Gat7u.WdZvXqg7V.imWV2NpKXeW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "test": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.IwTFynTYb64fxF26r.E1VixVxwctCLO'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Daniel": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.7fJcq9JYmTIK0yTbekxXRgvzNvAXeNW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Julian": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.XD.y02/BAtQ5MpbXaXUQE6HgskpVhhy'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "mar_castor": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.XD.y02/BAtQ5MpbXaXUQE6HgskpVhhy'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "oskar": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.5losKn1Qwk7QjzeRpt0DCNsaggeOcPW'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "DanielVSOskar": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.4arFjttcLw0.klvPYqDFr.6/smkVBFi'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Max": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.vNxSnVd.gLziZwasHzulZqQyy4rUIG6'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Deyvid": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.Z/LmI2IDzN0QMQ22AZD7Uxg2pjzB32m'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Mike": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.t7HSVc.A4ZOfrFjv03eUTZAt9.1tPY2'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Ulop": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.Awkhzjh.zBPd4.vLh9m796VDlLQ1Gy2'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "Phillip": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.lagj179NZuhaTzxbhxr4i98bX/.beFq'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "test_mary": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.tirwMrbuLUEJSTcf2PE0rcXtpC5UZCu'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "test_jana": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.idsMF/Y2csTepXgDH75GOpLz57e.s6m'",
+        "profile": {
+            "wins": 0
+        }
+    },
+    "miker": {
+        "password": "b'$2b$12$X50ynTmqfshhtC59ZFpcv.BsYPbuJ5gD6vUprznLKb2iJXUEFJ/E.'",
+        "profile": {
+            "wins": 0
+        }
     }
 }
