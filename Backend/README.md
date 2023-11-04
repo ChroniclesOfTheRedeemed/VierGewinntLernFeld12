@@ -31,6 +31,7 @@ Setup (TODO when setting up project on new machine)
 install python version ???  (dunno)
 --> link setup page
 
+- `pip install requests`
 - `pip install flask-cors`
 - `pip install bcrypt`
 

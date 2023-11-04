@@ -2,6 +2,16 @@ import requests
 
 base_url = "http://basicuser256.pythonanywhere.com"
 
+# bot configuration options: only chase x best options, forget about the rest
+# depth x
+# filter x best options per evaluator
+# filter x worst options per enemy move (1)
+
+# filter threshold?
+
+# depth understanding strategy
+# expect perfect enemy or do not expect perfect enemy
+# -> if expect perfect enemy: losses will be accounted harsher than wins/ only the value of the worst x moves count
 
 def login(username, password):
     try:

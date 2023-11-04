@@ -3,7 +3,7 @@ import random
 import time
 
 from bots.api import login, fetch_challengers, challenge, get_state, move
-from src.constants import Api
+from src.game.constants import Api
 
 
 # in game toggle
@@ -18,10 +18,10 @@ from src.constants import Api
 
 # if in game state says game over toggle in game and wait for challenges
 
-def main():
+def start_bot(name, password, move_on_game):
     in_game = True
-    password = "randy4refjpodsre03tfwf"
-    name = "randy"
+    password = password
+    name = name
     token = ""
     while True:
         try:
@@ -35,12 +35,13 @@ def main():
                 else:
                     time.sleep(5)
                     game_state = get_state(token)
-                    if game_state["status"] != "ok":
-                        raise Exception
+                    if game_state["status"] == "no game found":
+                        in_game = False
+                        continue
                     if game_state["game_state"] != "ongoing":
                         in_game = False
                     elif game_state["player1turn"]:
-                        move(token, random.choice([0, 1, 2, 3, 4, 5, 6]))
+                        move(token, move_on_game(game_state))
         except Exception as e:
             data = login(name, password)
             token = data[Api.Json.token]
@@ -49,5 +50,9 @@ def main():
             continue
 
 
+def randy_move(game_state):
+    return random.choice([0, 1, 2, 3, 4, 5, 6])
+
+
 if __name__ == "__main__":
-    main()
+    start_bot("randy", "randy4refjpodsre03tfwf", randy_move)
