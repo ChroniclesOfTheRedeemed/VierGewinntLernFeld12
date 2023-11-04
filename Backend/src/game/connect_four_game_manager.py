@@ -1,28 +1,10 @@
 from src.game import connect_four_state
+from src.game.player_integrations import player_integration_list
 from src.game.user_management import user_manager
-from src.game.connect_four_game import Viergewinnt
+from src.game.connect_four_game import ConnectFourGame
 
 
-# Declaring our password
-
-
-# exclude datatype logic from business logic / how to access objects -> capsule in getter
-
-class GameObserver:
-
-    def gameOver(self, player1wins):
-        pass
-
-
-class GameManagement(GameObserver):
-
-    # session data format:
-    # sessions =  {
-    #   user1: game1,
-    #   user2: game1}
-    # challenges data format:
-    # challenges = {
-    #   token1:[challenger_username1, challenger2_username1]
+class GameManagement:
 
     def __init__(self):
         self.player1_sessions = {}
@@ -31,7 +13,7 @@ class GameManagement(GameObserver):
 
     def challenge(self, token, opponent_name):
         status = "ok"
-        opponent_token = user_manager.get_token_by_user(opponent_name)
+        opponent_token = self.get_token_by_name(opponent_name)
         challenger = user_manager.sessions[token]
         if opponent_token:
             game = self.check_ongoing_game(opponent_token)
@@ -72,7 +54,7 @@ class GameManagement(GameObserver):
             return "no ongoing game found"
 
     def check_ongoing_game(self, token):
-        game: Viergewinnt
+        game: ConnectFourGame
         user = user_manager.sessions[token]
         if user in self.player1_sessions:
             game = self.player1_sessions[user]
@@ -98,22 +80,10 @@ class GameManagement(GameObserver):
         token1, token2 = self.get_usernames_by_game_id(game.id)
         return status, game.State, token1, token2
 
-    # def request_solo_game(self, token):
-    #     game = Viergewinnt(self)
-    #     user_name = user_manager.sessions[token]
-    #     self.player1_sessions[user_name] = game
-    #     self.player2_sessions[user_name] = game
-    #     token1, token2 = self.get_usernames_by_game_id(game.id)
-    #     return "ok", game.State, token1, token2
-
-    # start game
-    #    add session to both users
-    #   init game
-    #   remove challenges on both users
     def start_game(self, user1, user2):
-        game = Viergewinnt()
-        self.remove_challenges(user_manager.get_token_by_user(user1))
-        self.remove_challenges(user_manager.get_token_by_user(user2))
+        game = ConnectFourGame()
+        self.remove_challenges(self.get_token_by_name(user1))
+        self.remove_challenges(self.get_token_by_name(user2))
         if user1 in self.player2_sessions:
             del self.player2_sessions[user1]
         if user2 in self.player1_sessions:
@@ -135,7 +105,7 @@ class GameManagement(GameObserver):
             if game.State.player1turn:
                 try:
                     status = "ok"
-                    game.playerMadeMove(move)
+                    game.player_made_move(move)
                     player1_moved = True
                 except connect_four_state.BadMoveException:
                     status = "bad move"
@@ -146,7 +116,7 @@ class GameManagement(GameObserver):
             if not game.State.player1turn:
                 try:
                     status = "ok"
-                    game.playerMadeMove(move)
+                    game.player_made_move(move)
                 except connect_four_state.BadMoveException:
                     status = "bad move"
                 except connect_four_state.GameEndedException:
@@ -158,7 +128,7 @@ class GameManagement(GameObserver):
             token1, token2 = self.get_usernames_by_game_id(game.id)
             return status, game.State, token1, token2
 
-    def get_game_by_user(self, user_name) -> Viergewinnt:
+    def get_game_by_user(self, user_name) -> ConnectFourGame:
         if user_name in self.player1_sessions:
             return self.player1_sessions[user_name]
         if user_name in self.player2_sessions:
@@ -179,6 +149,13 @@ class GameManagement(GameObserver):
 
     def get_userame_from_token(self, token):
         return user_manager.sessions[token]
+
+    def get_token_by_name(self, name):
+        if name in player_integration_list:
+            # TODO make sure names do not clash with user tokens
+            return name
+        else:
+            return user_manager.get_token_by_user(name)
 
 
 game_manager = GameManagement()

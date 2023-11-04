@@ -1,11 +1,11 @@
 from abc import abstractmethod
 
-PlayerIntegrations = [
-
-]
 
 class PlayerIntegration:
 
     @abstractmethod
     def make_move(self) -> int:
         pass
+
+player_integration_list = {}
+player_integration_list["Randy"] = None
