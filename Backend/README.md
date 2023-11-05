@@ -34,6 +34,7 @@ install python version ???  (dunno)
 - `pip install requests`
 - `pip install flask-cors`
 - `pip install bcrypt`
+- `pip install numpy`
 
 install Bcrypt install flask
 

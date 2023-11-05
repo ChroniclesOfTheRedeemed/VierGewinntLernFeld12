@@ -2,6 +2,7 @@ import requests
 
 base_url = "http://basicuser256.pythonanywhere.com"
 
+
 # bot configuration options: only chase x best options, forget about the rest
 # depth x
 # filter x best options per evaluator

@@ -117,14 +117,18 @@ class ConnectFourGame:
         else:
             mark = self.player_2_mark
 
+        level = self.get_level_of_move(checked_move)
+        self.State.spiel_field[checked_move][level] = mark
+        self.movesDone += 1
+        self.State.player1turn = not self.State.player1turn
+        return level
+
+    def get_level_of_move(self, checked_move):
         level = 0
         for level in range(0, self.field_height):
             if self.State.spiel_field[checked_move][level] is self.empty_field:
-                self.State.spiel_field[checked_move][level] = mark
                 self.State.last_move = (checked_move, level)
                 break
-        self.movesDone += 1
-        self.State.player1turn = not self.State.player1turn
         return level
 
     def update_game_status(self, move, level_of_move):
