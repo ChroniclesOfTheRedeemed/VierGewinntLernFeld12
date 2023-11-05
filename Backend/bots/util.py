@@ -1,3 +1,5 @@
+from bots.randy import get_random_array
+
 field_height = 6
 field_width = 7
 empty_field = 0
@@ -61,3 +63,12 @@ def is_it_my_turn(my_name, game_field):
 
 
 print(get_highest_of_threshold([5, 3, 7, 1, 9, 7, 4], 3))
+
+
+def randomize_values(heat_values, threshold, lower_bound):
+    array = get_highest_of_threshold(heat_values, threshold)
+    random_array = get_random_array()
+    result_array = []
+    for i in range(0, len(array)):
+        result_array.append(array[i] + random_array[i] if array[i] >= lower_bound else lower_bound)
+    return result_array

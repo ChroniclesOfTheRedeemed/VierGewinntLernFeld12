@@ -4,10 +4,8 @@ from bots.api import fetch_challengers, challenge, get_state, login, move
 from src.game.constants import Api
 
 
-def start_bot(name, password, move_on_game):
+def start_bot(name, password, bot_move):
     in_game = True
-    password = password
-    name = name
     token = ""
     while True:
         try:
@@ -27,7 +25,7 @@ def start_bot(name, password, move_on_game):
                     if game_state["game_state"] != "ongoing":
                         in_game = False
                     elif game_state["player1turn"]:
-                        move_made = move_on_game(game_state)
+                        move_made = bot_move(game_state, name)
                         print("made move ", move_made)
                         move(token, move_made)
         except Exception as e:
