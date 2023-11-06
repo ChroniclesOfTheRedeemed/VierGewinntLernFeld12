@@ -12,7 +12,7 @@ class TestUserManagement(TestCase):
 
     def test_hash_pass(self):
         manager = UserManagement()
-        print(manager.hash_password("toll"))
+        print(hash_password("toll"))
 
     def test_user_add(self):
         manager = UserManagement()

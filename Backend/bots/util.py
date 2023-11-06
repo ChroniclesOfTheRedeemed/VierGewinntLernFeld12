@@ -1,10 +1,14 @@
-from bots.randy import get_random_array
+import numpy
 
 field_height = 6
 field_width = 7
 empty_field = 0
 player_1_mark = 1
 player_2_mark = 2
+
+
+def get_random_array():
+    return list(numpy.random.rand(7))
 
 
 def in_boundaries(column, row):

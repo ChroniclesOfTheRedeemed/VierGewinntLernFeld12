@@ -1,12 +1,4 @@
-import random
-
-import numpy
-
-from bots.util import return_x_highest_of_array, get_level_of_move
-
-
-def get_random_array():
-    return list(numpy.random.rand(7))
+from bots.util import return_x_highest_of_array, get_level_of_move, get_random_array
 
 
 def randy_move(game_state, player_name):

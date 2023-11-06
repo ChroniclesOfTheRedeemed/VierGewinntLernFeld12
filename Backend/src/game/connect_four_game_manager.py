@@ -1,4 +1,5 @@
 from src.game import connect_four_state
+from src.game.constants import Api
 from src.game.player_integrations import player_integration_list
 from src.game.user_management import user_manager
 from src.game.connect_four_game import ConnectFourGame
@@ -12,13 +13,13 @@ class GameManagement:
         self.challenges = {}
 
     def challenge(self, token, opponent_name):
-        status = "ok"
+        status = Api.StatusNames.ok
         opponent_token = self.get_token_by_name(opponent_name)
         challenger = user_manager.sessions[token]
         if opponent_token:
             game = self.check_ongoing_game(opponent_token)
             if game:
-                status = "Opponent is busy"
+                status = Api.StatusNames.opponent_busy
             else:
                 if self.is_challenged(token, opponent_name):
                     self.start_game(challenger, opponent_name)
@@ -29,14 +30,14 @@ class GameManagement:
                     else:
                         self.challenges[opponent_token] = [challenger]
         else:
-            status = "Opponent is not available."
+            status = Api.StatusNames.opponent_not_available
         return status
 
     def is_challenged(self, token, by_user):
         return by_user in self.challenges[token] if token in self.challenges else False
 
     def fetch_challengers(self, token):
-        uhh = ("ok", self.challenges[token]) if token in self.challenges else ("ok", [])
+        uhh = (Api.StatusNames.ok, self.challenges[token]) if token in self.challenges else (Api.StatusNames.ok, [])
         return uhh
 
     def forfeit_match(self, token):
@@ -49,9 +50,9 @@ class GameManagement:
                 game.State.result = connect_four_state.player2wins
             if user in self.player2_sessions:
                 game.State.result = connect_four_state.player1wins
-            return "ok"
+            return Api.StatusNames.ok
         else:
-            return "no ongoing game found"
+            return Api.StatusNames.there_is_no_game
 
     def check_ongoing_game(self, token):
         game: ConnectFourGame
@@ -69,13 +70,13 @@ class GameManagement:
 
     def fetch_state(self, token):
         user_name = user_manager.sessions[token]
-        status = "ok"
+        status = Api.StatusNames.ok
         if user_name in self.player1_sessions:
             game = self.player1_sessions[user_name]
         elif user_name in self.player2_sessions:
             game = self.player2_sessions[user_name]
         else:
-            return "no game found", None, None, None
+            return Api.StatusNames.no_game_found, None, None, None
 
         token1, token2 = self.get_usernames_by_game_id(game.id)
         return status, game.State, token1, token2
@@ -90,13 +91,13 @@ class GameManagement:
             del self.player1_sessions[user2]
         self.player1_sessions[user1] = game
         self.player2_sessions[user2] = game
-        return "ok"
+        return Api.StatusNames.ok
 
     def remove_challenges(self, token):
         self.challenges[token] = []
 
     def make_move(self, token, move):
-        status = "not your turn"
+        status = Api.StatusNames.not_your_turn
         user_name = user_manager.sessions[token]
         player1_moved = False
         game = None
@@ -104,25 +105,25 @@ class GameManagement:
             game = self.player1_sessions[user_name]
             if game.State.player1turn:
                 try:
-                    status = "ok"
+                    status = Api.StatusNames.ok
                     game.player_made_move(move)
                     player1_moved = True
                 except connect_four_state.BadMoveException:
-                    status = "bad move"
+                    status = Api.StatusNames.bad_move
                 except connect_four_state.GameEndedException:
-                    status = "game has concluded already"
+                    status = Api.StatusNames.game_has_concluded_already
         if user_name in self.player2_sessions and not player1_moved:
             game = self.player2_sessions[user_name]
             if not game.State.player1turn:
                 try:
-                    status = "ok"
+                    status = Api.StatusNames.ok
                     game.player_made_move(move)
                 except connect_four_state.BadMoveException:
-                    status = "bad move"
+                    status = Api.StatusNames.bad_move
                 except connect_four_state.GameEndedException:
-                    status = "game has concluded already"
+                    status = Api.StatusNames.game_has_concluded_already
         if not game:
-            status = "there is no game going on"
+            status = Api.StatusNames.there_is_no_game
             return status, None, None, None
         else:
             token1, token2 = self.get_usernames_by_game_id(game.id)
@@ -135,8 +136,8 @@ class GameManagement:
             return self.player2_sessions[user_name]
 
     def get_usernames_by_game_id(self, game_id):
-        user_name_1 = "player_not_found"
-        user_name_2 = "player_not_found"
+        user_name_1 = Api.StatusNames.player_not_found
+        user_name_2 = Api.StatusNames.player_not_found
         for username, game in self.player1_sessions.items():
             if game_id == game.id:
                 user_name_1 = username

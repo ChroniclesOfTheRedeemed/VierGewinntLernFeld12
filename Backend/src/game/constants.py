@@ -1,5 +1,4 @@
 class Api:
-
     class Url:
         base = "http://127.0.0.1:5000/"
         create_user = "/create_user"
@@ -32,6 +31,23 @@ class Api:
         last_move = "last_move"
         challengers = "challengers"
         online_player_list = "online_player_list"
+        prefix_column = "coloumn_"
+
+    class StatusNames:
+        invalid_token = "invalid token"
+        ok = "ok"
+        bad_request = "bad request"
+        invalid_credentials = "invalid credentials"
+        user_already_exists = "user already exists"
+        no_token = "no token given"
+        no_game_found = "no game found"
+        not_your_turn = "not your turn"
+        bad_move = "bad move"
+        game_has_concluded_already = "game has concluded already"
+        there_is_no_game = "there is no game going on"
+        opponent_not_available = "opponent is not available"
+        opponent_busy = "opponent is busy"
+        player_not_found = "player_not_found"
 
 
 class BadRequestException(Exception):
