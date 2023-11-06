@@ -17,7 +17,7 @@ def start_bot(name, password, bot_move):
                         challenge(token, data[Api.Json.challengers][0])
                         in_game = True
                 else:
-                    time.sleep(5)
+                    time.sleep(1)
                     game_state = get_state(token)
                     if game_state["status"] == "no game found":
                         in_game = False
